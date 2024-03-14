@@ -45,7 +45,7 @@ class SoundItem(Item): #items that play sounds when looked at
 
         Item.__init__(self, name, description)
         self.sound_file = sound_file
-        self.sound_path = os.path.join("room_explorer_audio", self.sound_file)
+        self.sound_path = r"room_explorer_audio\\" + self.sound_file
 
     @property                           #path to sound file to be played
     def sound_file(self):
@@ -54,7 +54,8 @@ class SoundItem(Item): #items that play sounds when looked at
     @sound_file.setter
     def sound_file(self, new_value):
         self._sound_file = new_value
-        self.sound_path = os.path.join("room_explorer_audio", self.sound_file)
+        self.sound_path = r"room_explorer_audio\\" + self.sound_file
+
 
     def play_sound(self): #prints the item's description and plays its associated sound
         mixer.music.load(self.sound_path)

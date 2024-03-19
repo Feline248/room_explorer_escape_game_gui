@@ -20,15 +20,15 @@ g = Game()
 # g.kitchen.add_item(item1)
 
 
-# g.credits()
-skeleton_key = Item("flower_key", "...")
-g.inventory.append(skeleton_key)
-unlabeled_record = Grabbable("unlabeled_record", "add description here")
-g.inventory.append(unlabeled_record)
-g.basement.locked = False
-g.greenhouse.locked = False
+g.credits()
+# skeleton_key = Item("flower_key", "...")
+# g.inventory.append(skeleton_key)
+# unlabeled_record = Grabbable("unlabeled_record", "add description here")
+# g.inventory.append(unlabeled_record)
+# g.basement.locked = False
+# g.greenhouse.locked = False
 
 
-g.play()
+# g.play()
 
 

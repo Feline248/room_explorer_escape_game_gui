@@ -105,7 +105,7 @@ class Game():
         kitchen.add_item("chair", "There is a broken chair in one corner.")
         kitchen.add_item("flowers", "A glass vase of dried out roses sits on top of a battered table. The flowers are shades of pale brownish pink and yellow.")
 
-        attic.add_item("bed", "One side of the room is occupied by a large bed with pink and brown polka-dotted sheets.")                                                                        #attic
+        attic.add_item("bed", "One side of the room is occupied by a large bed with flower-patterned sheets and blue pillows.")                                                                        #attic
         attic.add_item("armchair", "There's a leather airmchair in one corner. It's very comfy.")
         attic.add_item("bowls", "There are two shallow bowls on the floor. They look like they might be food and water dishes for a pet.")
 
@@ -639,6 +639,7 @@ class Game():
         print("\nCode: Rachel Dahl")
         print("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
         print("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
+        print("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla, \n3D Models - Rachel Dahl")
         print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer")
         print("\nTypewriter message:\nWinnifred (my cat)")
         print("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")

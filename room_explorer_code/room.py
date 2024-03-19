@@ -2,14 +2,15 @@ from items import Item, Grabbable, SoundItem, CodeItem
 
 class Room:
     
-    def __init__(self, name):
+    def __init__(self, name:str)->None:
         self.name = name
+        self.image = os.path.join(os.path.join("room_explorer_graphics","rooms"), f"{self.name}.png")#set image to file that matches its name
         self.exit_directions = [] # north, south, east, west, etc.
         self.exit_destinations = [] #the Rooms each exit leads to
         self.items = [] #the items in the room
         self.room_description = "" #description of the room
         self.locked = False #controls whether a room can be entered
-        self.hints_used = 0
+        self.hints_used = 0 #used to control what hint displays when the player requests it
 
     #getters/setters
     @property                               #name
@@ -19,6 +20,16 @@ class Room:
     @name.setter
     def name(self, new_value):
         self._name = new_value
+
+    @property                               #image
+    def image(self):
+        return self._image
+
+    @image.setter
+    def image(self, new_value):
+        #check for correct file extension
+        if new_value[:-4] == ".png":
+            self._image = new_value
 
     @property                               #exit_directions
     def exit_directions(self):

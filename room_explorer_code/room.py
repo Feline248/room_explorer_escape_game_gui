@@ -78,8 +78,6 @@ class Room:
 
 
 
-
-
     # __str__ func
     def __str__(self):
         result = '\n\n'

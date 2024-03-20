@@ -1,14 +1,17 @@
 from room import Room
 from items import Item, Grabbable, SoundItem, CodeItem
 import hints
-from pygame import mixer
+from pygame import *
 from time import sleep
 
 
 
-class Game():
+class Game(Surface):
+    WIDTH = 800
+    HEIGHT = 600
     
     def __init__(self):
+        
         self.inventory = []
         self.response = ""
         self.running = True
@@ -500,7 +503,10 @@ class Game():
 
 
     def play(self):
+        pygame.init()
         mixer.init()
+
+        window = pygame.display.set_mode((WIDTH, HEIGHT))
 
         print("\n\n\t\t\t\tRoom Explorer")
 

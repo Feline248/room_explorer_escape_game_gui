@@ -3,6 +3,7 @@ from items import Item, Grabbable, SoundItem, CodeItem
 import hints
 from pygame import *
 from time import sleep
+import os
 
 
 
@@ -11,7 +12,7 @@ class Game(Surface):
     HEIGHT = 600
     
     def __init__(self):
-        
+
         self.inventory = []
         self.response = ""
         self.running = True
@@ -51,6 +52,7 @@ class Game(Surface):
         attic = Room("attic")
         basement = Room("basement")
         greenhouse = Room("greenhouse")
+        bomb_shelter = Room("bomb shelter")
         escape = Room("escape")
 
         #lock rooms
@@ -58,6 +60,7 @@ class Game(Surface):
         basement.locked = True
         greenhouse.locked = True
         escape.locked = True
+        bomb_shelter.locked = True
 
         #set room descriptions
         entry_hall.room_description = "There's not much in here other than a coat hangar, an umbrella stand, and a few cabinets and shelves.\nThe front door has roses carved into the doorframe and pink stained glass diamond windows on either side.\n"
@@ -68,6 +71,7 @@ class Game(Surface):
         attic.room_description = "The attic has exposed wooden rafters along the slanted ceiling and peeling pink flower patterned wallpaper.\nThere's a black rug with pink roses on it in the center of the room. It looks like there used to be windows along one wall, but they're all boarded up."
         basement.room_description = "The basement is long and narrow, with a concrete floor and walls. It's almost empty, except for a few wooden crates\nand a door at the opposite end from the stairs. There's a strange contraption next to the door. Maybe it's some kind of lock?"
         greenhouse.room_description = "It's completely overgrown with all kinds of plants. You can hear the rain tapping against the glass above you.\nThere must be a leak somewhere keeping the plants alive."
+        bomb_shelter.room_description = ""
 
         #add exits
         entry_hall.add_exit("north", greenhouse)            #entry hall
@@ -92,6 +96,8 @@ class Game(Surface):
         greenhouse.add_exit("south", entry_hall)            #greenhouse
 
         bathroom.add_exit("north", library)                 #bathroom
+
+        # bomb_shelter.add_exit("", )                 #bomb shelter
 
 
         #add regular items
@@ -127,6 +133,8 @@ class Game(Surface):
         basement.add_item("contraption", "It looks a little like an old fashioned scale with a cup on one of the trays. There's a bunch of wires running from it to the door.")
         basement.add_item("pipes", "There are some rusted pipes running along the ceiling.")
         
+        bomb_shelter.add_item("Portrait", "A large, beautiful portrait. There is a label at the bottom that says 'Elia Browning'.")                                                                     #bomb_shelter
+
 
         #add grabbables
         entry_hall.add_grabbable("umbrella", "It's made of plain black fabric with lacy edges.")                                                        #entry hall
@@ -149,6 +157,9 @@ class Game(Surface):
                                                                                                                 #living_room
         living_room.add_sound_item("gramophone", "You turn on the record player and hear a beautiful recording of someone playing the flute. The tune sounds vaguely familiar.", "scarborough.wav")
         living_room.add_sound_item("window", "You look out the window, but all you can see is a dense fog and a few withered flowers in a long-forgotten window box. The sound of water is much louder here.", "waterfall.mp3")
+                                                                                                                #bomb shelter
+        bomb_shelter.add_sound_item("", "", "")
+
 
 
         #add code items
@@ -503,10 +514,10 @@ class Game(Surface):
 
 
     def play(self):
-        pygame.init()
+        init()
         mixer.init()
 
-        window = pygame.display.set_mode((WIDTH, HEIGHT))
+        window = display.set_mode((self.WIDTH, self.HEIGHT))
 
         print("\n\n\t\t\t\tRoom Explorer")
 
@@ -518,7 +529,7 @@ class Game(Surface):
         intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
         
         print(intro)
-        mixer.music.load(r"room_explorer_audio\rainstorm_cut.mp3")
+        mixer.music.load(os.path.join("room_explorer_audio", "rainstorm_cut.mp3"))
         mixer.music.set_volume(0.7)
         mixer.music.play()
         input("\n\n\t\t\t\tPress enter to begin.")

@@ -514,12 +514,16 @@ class Game(Surface):
 
 
     def play(self):
+        #initialize pygame
         init()
         mixer.init()
 
+        #Set up window
+        radio_icon = image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
         window = display.set_mode((self.WIDTH, self.HEIGHT))
+        display.set_caption("Room Explorer")
+        display.set_icon(radio_icon)
 
-        print("\n\n\t\t\t\tRoom Explorer")
 
         intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
         intro += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"

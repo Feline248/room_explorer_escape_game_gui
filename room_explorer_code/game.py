@@ -1,7 +1,10 @@
+#Name: Rachel Dahl
+#Game class that controls gameplay and GUI
+
 from room import Room
 from items import Item, Grabbable, SoundItem, CodeItem
 import hints
-from pygame import *
+import pygame
 from time import sleep
 import os
 
@@ -604,7 +607,7 @@ class Game(Surface):
             if action in ["cry", "boo hoo", "wahhh"]:
                 self.response = "No, I can't give up hope yet."
 
-            if action in ["burn house", "arson", "light everything on fire"]:
+            if action in ["burn house", "arson", "light everything on fire", "commit arson"]:
                 self.response = "I don't have anything to start a fire with."
                 for i in range(len(self.inventory)):
                     temp = self.inventory[i]
@@ -673,3 +676,7 @@ class Game(Surface):
         for i in range(3):
             pass
 
+    
+    def update_graphics(self):
+        """updates images and text shown on screen"""
+        pass

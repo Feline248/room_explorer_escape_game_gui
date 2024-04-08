@@ -1,3 +1,7 @@
+#Name: Rachel Dahl
+#Item class with name and description
+#I plan to add individual item images at a later point in time
+
 from pygame import mixer
 import os
 

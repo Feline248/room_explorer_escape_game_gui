@@ -1,3 +1,6 @@
+#Name: Rachel Dahl
+#Room class with name, items, description, exits, and image
+
 from items import Item, Grabbable, SoundItem, CodeItem
 import os
 

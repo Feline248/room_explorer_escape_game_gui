@@ -1,4 +1,5 @@
-#Ignore this file, it was for testing during development
+#Name: Rachel Dahl
+# Ignore this file, it was for testing during development
 #to play the game, run the main.py file instead
 
 from game import Game

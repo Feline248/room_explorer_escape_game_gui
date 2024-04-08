@@ -1,3 +1,6 @@
+#Name: Rachel Dahl
+#Hints for the game. Warning: contains spoilers
+
 #####Do not read this file before playing the game, it contains spoilers####
                                                                                                 #Entry hall
 entry_hall_hint_0 = "I should explore the rest of the house and see what I find."

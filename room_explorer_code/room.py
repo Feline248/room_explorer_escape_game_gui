@@ -2,13 +2,16 @@
 #Room class with name, items, description, exits, and image
 
 from items import Item, Grabbable, SoundItem, CodeItem
+import pygame
 import os
 
 class Room:
     
     def __init__(self, name:str)->None:
         self.name = name
-        self.image = os.path.join(os.path.join("room_explorer_graphics","rooms"), f"{self.name}.png")#set image to file that matches its name
+        self.usable_name = self.name.replace(" ", "_")
+        self.image_path = os.path.join(os.path.join("room_explorer_graphics","rooms"), f"{self.usable_name}.png")#set image to file that matches its name
+        self.image = pygame.image.load(self.image_path)
         self.exit_directions = [] # north, south, east, west, etc.
         self.exit_destinations = [] #the Rooms each exit leads to
         self.items = [] #the items in the room
@@ -25,22 +28,13 @@ class Room:
     def name(self, new_value):
         self._name = new_value
 
-    @property                               #image
-    def image(self):
-        return self._image
-
-    @image.setter
-    def image(self, new_value):
-        #check for correct file extension
-        if new_value[:-4] == ".png":
-            self._image = new_value
 
     @property                               #exit_directions
     def exit_directions(self):
         return self._exit_directions
 
     @exit_directions.setter
-    def exit_directions(self, new_value):
+    def exit_directions(self, new_value:str):
         self._exit_directions = new_value
 
     @property                               #exit_destinations
@@ -48,7 +42,7 @@ class Room:
         return self._exit_destinations
 
     @exit_destinations.setter
-    def exit_destinations(self, new_value):
+    def exit_destinations(self, new_value:str):
         self._exit_destinations = new_value
 
     @property                               #room_description
@@ -56,7 +50,7 @@ class Room:
         return self._room_description
 
     @room_description.setter
-    def room_description(self, new_value):
+    def room_description(self, new_value:str):
         self._room_description = new_value
 
     #additional methods

@@ -5,12 +5,13 @@ from room import Room
 from items import Item, Grabbable, SoundItem, CodeItem
 import hints
 import pygame
+from pygame import mixer
 from time import sleep
 import os
 
 
 
-class Game(Surface):
+class Game(pygame.Surface):
     WIDTH = 800
     HEIGHT = 600
     
@@ -518,12 +519,12 @@ class Game(Surface):
 
     def play(self):
         #initialize pygame
-        init()
+        pygame.init()
         mixer.init()
 
         #Set up window
         radio_icon = image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
-        window = display.set_mode((self.WIDTH, self.HEIGHT))
+        self.window = display.set_mode((self.WIDTH, self.HEIGHT))
         display.set_caption("Room Explorer")
         display.set_icon(radio_icon)
 
@@ -679,4 +680,4 @@ class Game(Surface):
     
     def update_graphics(self):
         """updates images and text shown on screen"""
-        pass
+        self.window.blit(self.current_room.image, (0,0))

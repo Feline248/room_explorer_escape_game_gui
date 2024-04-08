@@ -12,8 +12,13 @@ import os
 
 
 class Game(pygame.Surface):
+    #define size of window
     WIDTH = 1800
     HEIGHT = 1200
+
+    #define colors
+    INK = (10, 1, 28)
+    PAPER = (235, 237, 209)
     
     def __init__(self):
 
@@ -136,7 +141,8 @@ class Game(pygame.Surface):
         basement.add_item("contraption", "It looks a little like an old fashioned scale with a cup on one of the trays. There's a bunch of wires running from it to the door.")
         basement.add_item("pipes", "There are some rusted pipes running along the ceiling.")
         
-        bomb_shelter.add_item("Portrait", "A large, beautiful portrait. There is a label at the bottom that says 'Elia Browning'.")                                                                     #bomb_shelter
+        bomb_shelter.add_item("portrait", "A large, beautiful portrait. It contains a picture of a frog wearing a hat.")                                                                     #bomb_shelter
+        bomb_shelter.add_item("cereal", "A box of Cheeri Tori cereal. It's probably gone bad by now...")
 
 
         #add grabbables
@@ -527,6 +533,9 @@ class Game(pygame.Surface):
         pygame.display.set_caption("Room Explorer")
         pygame.display.set_icon(radio_icon)
 
+        #set up text in window
+        self.font = pygame.font.Font(os.path.join(os.path.join("room_explorer_graphics", "other"), "TravelingTypewriter.ttf"), 20)
+
 
         intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
         intro += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
@@ -670,7 +679,7 @@ class Game(pygame.Surface):
         print("\nCode: Rachel Dahl")
         print("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
         print("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
-        print("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla, \n3D Models - Rachel Dahl")
+        print("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla, \n3D Models - Rachel Dahl\nFont - Traveling Typewriter by Carl Krull")
         print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer")
         print("\nTypewriter message:\nWinnifred (my cat)")
         print("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
@@ -686,5 +695,14 @@ class Game(pygame.Surface):
     
     def update_graphics(self):
         """updates images and text shown on screen"""
+
+        #text
+        self.message = font.render(self.response, True, Game.INK, Game.PAPER)
+        self.text_box = self.message.get_rect()
+        self.text_box.center = (Game.WIDTH - 500, Game.HEIGHT//2)
+
+        #images
         self.window.blit(self.current_room.image, (0,0))
+        self.window.blit(self.message, self.text_box)
+
         pygame.display.update()

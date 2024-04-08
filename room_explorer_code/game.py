@@ -12,14 +12,13 @@ import os
 
 
 class Game(pygame.Surface):
-    WIDTH = 800
-    HEIGHT = 600
+    WIDTH = 1800
+    HEIGHT = 1200
     
     def __init__(self):
 
         self.inventory = []
         self.response = ""
-        self.running = True
         self.entry_hall, self.kitchen, self.living_room, self.library, self.bathroom, self.attic, self.basement, self.greenhouse, self.escape = self.create_rooms()
         self.bonuses_found = 0
 
@@ -215,7 +214,7 @@ class Game(pygame.Surface):
                     answer = input("Try to escape by climbing out the window? y/n")
                     if answer in ["y", "yes", "sure", "absolutely"]:
                         self.death()
-                        self.running = False
+                        RUNNING = False
                         self.response = "..."
                         break
                     else:
@@ -523,10 +522,10 @@ class Game(pygame.Surface):
         mixer.init()
 
         #Set up window
-        radio_icon = image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
-        self.window = display.set_mode((self.WIDTH, self.HEIGHT))
-        display.set_caption("Room Explorer")
-        display.set_icon(radio_icon)
+        radio_icon = pygame.image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
+        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        pygame.display.set_caption("Room Explorer")
+        pygame.display.set_icon(radio_icon)
 
 
         intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
@@ -546,8 +545,12 @@ class Game(pygame.Surface):
         
 
         print(self.current_room)
+        self.window.blit(self.current_room.image, (0, 0))
+        pygame.display.update()
 
-        while self.running == True:
+        RUNNING = True
+
+        while (RUNNING):
 
             #did we win?
             if self.current_room == self.escape:
@@ -560,8 +563,10 @@ class Game(pygame.Surface):
             self.response += "\nType 'a' for a list of accepted commands."
 
             action = input("What would you like to do? ").lower()
+
+            #end game
             if action in ["x","exit", "quit", "bye", "q"]:
-                self.running = False
+                RUNNING = False
                 break
 
             #print a list of all items in inventory
@@ -614,7 +619,7 @@ class Game(pygame.Surface):
                     temp = self.inventory[i]
                     if temp.name == "matches":
                         self.response = "You set fire to the room. If you can't get out, you'll take the whole house with you."
-                        self.running = False
+                        RUNNING = False
 
             if action in ["celebrate", "woop woop", "cheer"]:
                 self.response = "Yay! I accomplished something!"
@@ -642,6 +647,7 @@ class Game(pygame.Surface):
                 
 
             print(self.response)
+            self.update_graphics()
         
         sleep(75)
         print("\nYou're still here? The game's over. Go home.")
@@ -650,13 +656,13 @@ class Game(pygame.Surface):
 
     def death(self):
         print("As you climb out of the window, you realize suddenly that there is nothing underneath you.\nThe house was on the edge of a cliff! It quickly disappears into the mist as you fall to your death.\n")
-        self.running = False
+        RUNNING = False
 
 
     def win(self):
         print("You walk through a dark stone tunnel. After a while, you come to a spiral staircase descending deep into the earth.\nYou can hear rushing water nearby. At the bottom of the stairs, you discover a huge cave with a lake in it.\nThere's a boat near the edge of the lake, and in front it you can see daylight through the waterfall\nthat hides the entrance to the cave from the outside. You take the boat and follow the river back to civilization at last.")
         print(f"\nYou completed the game!\nYou found {self.bonuses_found}/2 bonuses. Play again to find them both!\n")
-        self.running = False
+        RUNNING = False
         self.credits()
 
     def credits(self):
@@ -681,3 +687,4 @@ class Game(pygame.Surface):
     def update_graphics(self):
         """updates images and text shown on screen"""
         self.window.blit(self.current_room.image, (0,0))
+        pygame.display.update()

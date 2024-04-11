@@ -7,18 +7,15 @@ import hints
 import pygame
 from pygame import mixer
 from time import sleep
+from constants import *
 import os
 
 
 
 class Game(pygame.Surface):
     #define size of window
-    WIDTH = 1800
-    HEIGHT = 1200
-
-    #define colors
-    INK = (10, 1, 28)
-    PAPER = (235, 237, 209)
+    WIDTH = 1200
+    HEIGHT = 700
     
     def __init__(self):
 
@@ -566,6 +563,13 @@ class Game(pygame.Surface):
                 self.win()
                 break
 
+            #end game when x button is pressed
+            for event in pygame.event.get():
+                if (event.type == KEYDOWN and event.key == K_ESCAPE):
+                    RUNNING = False
+                elif (event.type == QUIT):
+                    RUNNING = False
+
 
             #create response for this loop
             self.response = "Invalid input. Try the format [verb] [noun]."
@@ -574,7 +578,7 @@ class Game(pygame.Surface):
             action = input("What would you like to do? ").lower()
 
             #end game
-            if action in ["x","exit", "quit", "bye", "q"]:
+            if action in ["x","exit", "quit", "bye", "q", "farewell"]:
                 RUNNING = False
                 break
 
@@ -697,12 +701,10 @@ class Game(pygame.Surface):
         """updates images and text shown on screen"""
 
         #text
-        self.message = font.render(self.response, True, Game.INK, Game.PAPER)
-        self.text_box = self.message.get_rect()
-        self.text_box.center = (Game.WIDTH - 500, Game.HEIGHT//2)
+        self.message = font.render(self.response, True, INK, PAPER)
 
         #images
         self.window.blit(self.current_room.image, (0,0))
-        self.window.blit(self.message, self.text_box)
+        self.window.blit(self.message, (0,0))
 
         pygame.display.update()

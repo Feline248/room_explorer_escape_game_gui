@@ -5,6 +5,8 @@ from items import Item, Grabbable, SoundItem, CodeItem
 import pygame
 import os
 
+IMAGE_SIZE = (1200, 700)
+
 class Room:
     
     def __init__(self, name:str)->None:
@@ -12,6 +14,7 @@ class Room:
         self.usable_name = self.name.replace(" ", "_")
         self.image_path = os.path.join(os.path.join("room_explorer_graphics","rooms"), f"{self.usable_name}.png")#set image to file that matches its name
         self.image = pygame.image.load(self.image_path)
+        self.image = pygame.transform.scale(self.image, IMAGE_SIZE) #scale image down
         self.exit_directions = [] # north, south, east, west, etc.
         self.exit_destinations = [] #the Rooms each exit leads to
         self.items = [] #the items in the room

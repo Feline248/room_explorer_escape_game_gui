@@ -551,8 +551,7 @@ class Game(pygame.Surface):
         
 
         print(self.current_room)
-        self.window.blit(self.current_room.image, (0, 0))
-        pygame.display.update()
+        self.update_graphics()
 
         RUNNING = True
 
@@ -561,14 +560,19 @@ class Game(pygame.Surface):
             #did we win?
             if self.current_room == self.escape:
                 self.win()
+                RUNNING = False
                 break
+                
 
             #end game when x button is pressed
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_ESCAPE):
                     RUNNING = False
+                    break
+                
                 elif (event.type == QUIT):
                     RUNNING = False
+                    break
 
 
             #create response for this loop
@@ -674,7 +678,7 @@ class Game(pygame.Surface):
 
     def win(self):
         print("You walk through a dark stone tunnel. After a while, you come to a spiral staircase descending deep into the earth.\nYou can hear rushing water nearby. At the bottom of the stairs, you discover a huge cave with a lake in it.\nThere's a boat near the edge of the lake, and in front it you can see daylight through the waterfall\nthat hides the entrance to the cave from the outside. You take the boat and follow the river back to civilization at last.")
-        print(f"\nYou completed the game!\nYou found {self.bonuses_found}/2 bonuses. Play again to find them both!\n")
+        print(f"\nYou completed the game!\nYou found {self.bonuses_found}/3 bonuses. Play again to find them both!\n")
         RUNNING = False
         self.credits()
 
@@ -683,8 +687,8 @@ class Game(pygame.Surface):
         print("\nCode: Rachel Dahl")
         print("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
         print("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
-        print("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla, \n3D Models - Rachel Dahl\nFont - Traveling Typewriter by Carl Krull")
-        print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer")
+        print("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla\n3D Models - Rachel Dahl\nFont - Traveling Typewriter by Carl Krull")
+        print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer\nElia Browning")
         print("\nTypewriter message:\nWinnifred (my cat)")
         print("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
 
@@ -701,7 +705,7 @@ class Game(pygame.Surface):
         """updates images and text shown on screen"""
 
         #text
-        self.message = font.render(self.response, True, INK, PAPER)
+        self.message = self.font.render(self.response, False, INK, PAPER)
 
         #images
         self.window.blit(self.current_room.image, (0,0))

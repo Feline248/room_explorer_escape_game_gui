@@ -8,7 +8,8 @@ import pygame
 from pygame import mixer
 from time import sleep
 from constants import *
-import os
+from miscellaneous_functions import *
+
 
 
 
@@ -405,6 +406,7 @@ class Game(pygame.Surface):
                             mixer.music.play()
                             for i in range(10):
                                 pass
+                            restart_bg_music()
 
                             self.bonuses_found += 1
                     break
@@ -542,20 +544,22 @@ class Game(pygame.Surface):
         intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
         
         print(intro)
-        mixer.music.load(os.path.join("room_explorer_audio", "rainstorm_cut.mp3"))
+        mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
         mixer.music.play()
         input("\n\n\t\t\t\tPress enter to begin.")
         mixer.music.stop()
-        
-        
 
         print(self.current_room)
         self.update_graphics()
 
+        #set up background music
+        restart_bg_music()
+
         RUNNING = True
 
         while (RUNNING):
+
 
             #did we win?
             if self.current_room == self.escape:
@@ -597,7 +601,7 @@ class Game(pygame.Surface):
             
             #print the list of accepted commands
             if action in ["a", "controls", "help"]:
-                controls = open(r"room_explorer_info\controls.txt")
+                controls = open(os.path.join("room_explorer_info", "controls.txt"))
                 self.response = controls.read()
                 controls.close()
 
@@ -616,16 +620,22 @@ class Game(pygame.Surface):
                 self.response = str(self.current_room)
 
             #extra actions
-            if action in ["scream", "aaa"]:
+            if action in ["scream", "aaa", "temporarily go insane" ]:
                 self.response = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!!"
                 self.response += "\nI feel much better now."
-                mixer.music.load(r"room_explorer_audio\scream.mp3")
+                mixer.music.stop()
+                mixer.music.load(SCREAM)
+                mixer.music.set_volume(0.7)
                 mixer.music.play()
                 for i in range(10):
                     pass
+                restart_bg_music()
             
             if action == "escape":
                 self.response = "Wow, that's a great idea. I wish I had thought of that earlier."
+
+            if action in ["magic", "teleport", "time travel"]:
+                self.response = "I mean I guess I could, but that feels like cheating"
 
             if action in ["cry", "boo hoo", "wahhh"]:
                 self.response = "No, I can't give up hope yet."
@@ -673,10 +683,12 @@ class Game(pygame.Surface):
 
     def death(self):
         print("As you climb out of the window, you realize suddenly that there is nothing underneath you.\nThe house was on the edge of a cliff! It quickly disappears into the mist as you fall to your death.\n")
+        self.window.blit(DEATH_SCREEN, (0, 0))
         RUNNING = False
 
 
     def win(self):
+        mixer.music.stop()
         print("You walk through a dark stone tunnel. After a while, you come to a spiral staircase descending deep into the earth.\nYou can hear rushing water nearby. At the bottom of the stairs, you discover a huge cave with a lake in it.\nThere's a boat near the edge of the lake, and in front it you can see daylight through the waterfall\nthat hides the entrance to the cave from the outside. You take the boat and follow the river back to civilization at last.")
         print(f"\nYou completed the game!\nYou found {self.bonuses_found}/3 bonuses. Play again to find them both!\n")
         RUNNING = False
@@ -693,7 +705,7 @@ class Game(pygame.Surface):
         print("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
 
         mixer.init()
-        mixer.music.load(r"room_explorer_audio\inverse_cut_room_explorer.wav")
+        mixer.music.load(CREDITS)
         mixer.music.set_volume(0.7)
         mixer.music.play()
 
@@ -712,3 +724,4 @@ class Game(pygame.Surface):
         self.window.blit(self.message, (0,0))
 
         pygame.display.update()
+

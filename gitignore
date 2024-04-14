@@ -1,2 +1,4 @@
-__pycache__/
-textures_and_backgrounds/
+/__pycache__/
+/textures_and_backgrounds/
+/room_explorer_audio/room_explorer_bg_music.wav
+/room_explorer_audio\room_explorer_bg_music.wav

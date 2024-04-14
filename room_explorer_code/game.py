@@ -573,7 +573,7 @@ class Game(pygame.Surface):
                 break
                 
 
-            #end game when x button is pressed
+            #end game when x button or escape key is pressed
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_ESCAPE):
                     RUNNING = False
@@ -586,6 +586,7 @@ class Game(pygame.Surface):
                     RUNNING = False
                     pygame.display.quit()
                     pygame.quit()
+                    sys.exit()
                     break
 
 

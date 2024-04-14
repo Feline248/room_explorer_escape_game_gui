@@ -556,6 +556,11 @@ class Game(pygame.Surface):
         #set up background music
         restart_bg_music()
 
+        #start clock
+        self.clock = pygame.time.Clock()
+        self.delta_time = self.clock.tick(60)
+        self.anim_delay = 0
+
         RUNNING = True
 
         while (RUNNING):
@@ -572,10 +577,15 @@ class Game(pygame.Surface):
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_ESCAPE):
                     RUNNING = False
+                    pygame.display.quit()
+                    pygame.quit()
+                    sys.exit()
                     break
                 
                 elif (event.type == QUIT):
                     RUNNING = False
+                    pygame.display.quit()
+                    pygame.quit()
                     break
 
 
@@ -672,9 +682,13 @@ class Game(pygame.Surface):
                     self.handle_use(noun)
                             
                 
+            self.anim_delay += 1
 
-            print(self.response)
-            self.update_graphics()
+            if self.anim_delay == 7:
+                self.anim_delay = 0
+                print(self.response)
+                self.update_graphics()
+            
         
         sleep(75)
         print("\nYou're still here? The game's over. Go home.")

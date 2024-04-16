@@ -43,4 +43,4 @@ DEATH_SCREEN = os.path.join(os.path.join("room_explorer_graphics", "other"), "de
 
 #constants for text
 FONT_SIZE = 20
-LINE_SPACING = 45
+LINE_SPACING = 0

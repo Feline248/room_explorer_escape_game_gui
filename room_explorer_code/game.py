@@ -24,7 +24,7 @@ class Game(pygame.Surface):
         self.response = ""
         self.entry_hall, self.kitchen, self.living_room, self.library, self.bathroom, self.attic, self.basement, self.greenhouse, self.escape = self.create_rooms()
         self.bonuses_found = 0
-        self.message_box = pygame.Rect(Game.WIDTH - Room.IMAGE_SIZE[0], 0, Game.WIDTH - Room.IMAGE_SIZE[0], Room.IMAGE_SIZE[1],)
+        self.message_box = pygame.Rect(Room.IMAGE_SIZE[0], 0, Game.WIDTH - Room.IMAGE_SIZE[0], Room.IMAGE_SIZE[1],)
         self.input_box = pygame.Rect(0, Game.HEIGHT - Room.IMAGE_SIZE[1], Game.HEIGHT - Room.IMAGE_SIZE[1], Game.WIDTH)
 
 
@@ -728,11 +728,11 @@ class Game(pygame.Surface):
     def update_graphics(self):
         """updates images and text shown on screen"""
 
-        #text
-        self.draw_text(self.response, self.message_box)
-
         #images
         self.window.blit(self.current_room.image, (0,0))
+
+        #text
+        self.draw_text(self.response, self.message_box)
 
         pygame.display.update()
 
@@ -747,6 +747,10 @@ class Game(pygame.Surface):
             #determine width of line
             while self.font.size(text[:i])[0] < rect.width and i < len(text):
                 i += 1
+
+            #adjust for words
+            if i < len(text):
+                i = text.rfind(" ", 0, i) + 1
 
             #render text to screen
             self.window.blit(self.font.render(text[:i], False, INK, PAPER), (rect.left, current_y))

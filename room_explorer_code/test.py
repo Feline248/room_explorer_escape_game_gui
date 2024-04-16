@@ -10,6 +10,7 @@ from items import Item, Grabbable
 
 
 g = Game()
+g.current_room = g.escape
 
 # room1 = Room("kitchen")
 

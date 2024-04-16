@@ -26,6 +26,19 @@ class Game(pygame.Surface):
         self.bonuses_found = 0
         self.message_box = pygame.Rect(Room.IMAGE_SIZE[0], 0, Game.WIDTH - Room.IMAGE_SIZE[0], Room.IMAGE_SIZE[1],)
         self.input_box = pygame.Rect(0, Game.HEIGHT - Room.IMAGE_SIZE[1], Game.HEIGHT - Room.IMAGE_SIZE[1], Game.WIDTH)
+        
+        #initialize pygame
+        pygame.init()
+        mixer.init()
+
+        #Set up window
+        radio_icon = pygame.image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
+        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        pygame.display.set_caption("Room Explorer")
+        pygame.display.set_icon(radio_icon)
+
+        #set up text in window
+        self.font = pygame.font.Font(os.path.join(os.path.join("room_explorer_graphics", "other"), "TravelingTypewriter.ttf"), FONT_SIZE)
 
 
     #getters/setters
@@ -524,27 +537,16 @@ class Game(pygame.Surface):
 
 
     def play(self):
-        #initialize pygame
-        pygame.init()
-        mixer.init()
 
-        #Set up window
-        radio_icon = pygame.image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
-        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("Room Explorer")
-        pygame.display.set_icon(radio_icon)
+        intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
+        intro += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
+        intro += "pouring rain. Luckily, you found an old house to take shelter in. It looks like it's been abandoned\n"
+        intro += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
+        intro += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
+        intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
 
-        #set up text in window
-        self.font = pygame.font.Font(os.path.join(os.path.join("room_explorer_graphics", "other"), "TravelingTypewriter.ttf"), FONT_SIZE)
-
-        self.response = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
-        self.response += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
-        self.response += "pouring rain. Luckily, you found an old house to take shelter in. It looks like it's been abandoned\n"
-        self.response += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
-        self.response += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
-        self.response += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
-
-        self.update_graphics()
+        self.draw_text(intro, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
+        pygame.display.update()
         
         print(self.response)
         mixer.music.load(STORM)
@@ -585,12 +587,26 @@ class Game(pygame.Surface):
                     RUNNING = False
                     break
 
+            #get user input
+            if event.type == pygame.KEYDOWN: 
+  
+                # Check for backspace 
+                if event.key == pygame.K_BACKSPACE: 
+                
+                    # get text input from 0 to -1 i.e. end. 
+                    action = action[:-1] 
+    
+                # Unicode standard is used for string 
+                # formation 
+                else: 
+                    action += event.unicode
+
 
             #create response for this loop
             self.response = "Invalid input. Try the format [verb] [noun]."
             self.response += "\nType 'a' for a list of accepted commands."
 
-            action = input("What would you like to do? ").lower()
+            action = input().lower()
 
             #end game
             if action in ["x","exit", "quit", "bye", "q", "farewell"]:
@@ -713,6 +729,8 @@ class Game(pygame.Surface):
         self.response += ("\nTypewriter message:\nWinnifred (my cat)")
         self.response += ("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
 
+        self.update_graphics()
+
         mixer.init()
         mixer.music.load(CREDITS)
         mixer.music.set_volume(0.7)
@@ -722,7 +740,8 @@ class Game(pygame.Surface):
             pass
 
         sleep(75)
-        print("\nYou're still here? The game's over. Go home.")
+        self.response = ("\nYou're still here? The game's over. Go home.")
+        self.update_graphics()
 
     
     def update_graphics(self):
@@ -732,6 +751,7 @@ class Game(pygame.Surface):
         self.window.blit(self.current_room.image, (0,0))
 
         #text
+        self.response += " What would you like to do? "
         self.draw_text(self.response, self.message_box)
 
         pygame.display.update()

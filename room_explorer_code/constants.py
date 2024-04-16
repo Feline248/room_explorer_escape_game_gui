@@ -23,6 +23,7 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
     K_SPACE,
+    MOUSEBUTTONUP
 )
 
 #paths to sounds
@@ -39,3 +40,7 @@ CREDITS = os.path.join("room_explorer_audio", "inverse_cut_room_explorer.wav")
 
 #misc image paths
 DEATH_SCREEN = os.path.join(os.path.join("room_explorer_graphics", "other"), "death.png")
+
+#constants for text
+FONT_SIZE = 20
+LINE_SPACING = 45

@@ -15,8 +15,8 @@ from miscellaneous_functions import *
 
 class Game(pygame.Surface):
     #define size of window
-    WIDTH = 1200
-    HEIGHT = 700
+    WIDTH = 1300
+    HEIGHT = 600
     
     def __init__(self):
 
@@ -24,6 +24,8 @@ class Game(pygame.Surface):
         self.response = ""
         self.entry_hall, self.kitchen, self.living_room, self.library, self.bathroom, self.attic, self.basement, self.greenhouse, self.escape = self.create_rooms()
         self.bonuses_found = 0
+        self.message_box = pygame.Rect(Game.WIDTH - Room.IMAGE_SIZE[0], 0, Game.WIDTH - Room.IMAGE_SIZE[0], Room.IMAGE_SIZE[1],)
+        self.input_box = pygame.Rect(0, Game.HEIGHT - Room.IMAGE_SIZE[1], Game.HEIGHT - Room.IMAGE_SIZE[1], Game.WIDTH)
 
 
     #getters/setters
@@ -533,17 +535,18 @@ class Game(pygame.Surface):
         pygame.display.set_icon(radio_icon)
 
         #set up text in window
-        self.font = pygame.font.Font(os.path.join(os.path.join("room_explorer_graphics", "other"), "TravelingTypewriter.ttf"), 20)
+        self.font = pygame.font.Font(os.path.join(os.path.join("room_explorer_graphics", "other"), "TravelingTypewriter.ttf"), FONT_SIZE)
 
+        self.response = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
+        self.response += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
+        self.response += "pouring rain. Luckily, you found an old house to take shelter in. It looks like it's been abandoned\n"
+        self.response += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
+        self.response += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
+        self.response += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
 
-        intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
-        intro += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
-        intro += "pouring rain. Luckily, you found an old house to take shelter in. It looks like it's been abandoned\n"
-        intro += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
-        intro += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
-        intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
+        self.update_graphics()
         
-        print(intro)
+        print(self.response)
         mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
         mixer.music.play()
@@ -565,7 +568,6 @@ class Game(pygame.Surface):
 
         while (RUNNING):
 
-
             #did we win?
             if self.current_room == self.escape:
                 self.win()
@@ -577,16 +579,10 @@ class Game(pygame.Surface):
             for event in pygame.event.get():
                 if (event.type == KEYDOWN and event.key == K_ESCAPE):
                     RUNNING = False
-                    pygame.display.quit()
-                    pygame.quit()
-                    sys.exit()
                     break
                 
                 elif (event.type == QUIT):
                     RUNNING = False
-                    pygame.display.quit()
-                    pygame.quit()
-                    sys.exit()
                     break
 
 
@@ -665,7 +661,6 @@ class Game(pygame.Surface):
             if action in ["h", "hint"]:
                 self.hint()
 
-
             words = action.split(" ")
             if len(words) == 2:
                 verb = words[0]
@@ -691,8 +686,7 @@ class Game(pygame.Surface):
                 self.update_graphics()
             
         
-        sleep(75)
-        print("\nYou're still here? The game's over. Go home.")
+        
 
 
 
@@ -710,14 +704,14 @@ class Game(pygame.Surface):
         self.credits()
 
     def credits(self):
-        print("\t\tRoom Explorer")
-        print("\nCode: Rachel Dahl")
-        print("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
-        print("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
-        print("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla\n3D Models - Rachel Dahl\nFont - Traveling Typewriter by Carl Krull")
-        print("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer\nElia Browning")
-        print("\nTypewriter message:\nWinnifred (my cat)")
-        print("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
+        self.response = ("\t\tRoom Explorer")
+        self.response += ("\nCode: Rachel Dahl")
+        self.response += ("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
+        self.response += ("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
+        self.response += ("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla\n3D Models - Rachel Dahl\nFont - Traveling Typewriter by Carl Krull")
+        self.response += ("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer\nElia Browning")
+        self.response += ("\nTypewriter message:\nWinnifred (my cat)")
+        self.response += ("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
 
         mixer.init()
         mixer.music.load(CREDITS)
@@ -727,16 +721,40 @@ class Game(pygame.Surface):
         for i in range(3):
             pass
 
+        sleep(75)
+        print("\nYou're still here? The game's over. Go home.")
+
     
     def update_graphics(self):
         """updates images and text shown on screen"""
 
         #text
-        self.message = self.font.render(self.response, False, INK, PAPER)
+        self.draw_text(self.response, self.message_box)
 
         #images
         self.window.blit(self.current_room.image, (0,0))
-        self.window.blit(self.message, (0,0))
 
         pygame.display.update()
+
+
+    def draw_text(self, text:str, rect:pygame.Rect):
+        current_y = rect.top
+        font_height = self.font.size("Tg")[1]
+
+        while text:
+            i = 0
+
+            #determine width of line
+            while self.font.size(text[:i])[0] < rect.width and i < len(text):
+                i += 1
+
+            #render text to screen
+            self.window.blit(self.font.render(text[:i], False, INK, PAPER), (rect.left, current_y))
+
+            #move to next line
+            current_y += font_height + LINE_SPACING
+
+            #remove text already printed
+            text = text[i:]
+        
 

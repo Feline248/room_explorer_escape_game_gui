@@ -19,10 +19,14 @@
 #######MAIN#######
                                                                                                                                          
 from game import Game
+import pygame
 
 g = Game()
 
 g.play()
+
+pygame.quit()
+
 
 
 

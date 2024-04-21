@@ -34,6 +34,7 @@ class Game(pygame.Surface):
         #Set up window
         radio_icon = pygame.image.load(os.path.join(os.path.join("room_explorer_graphics", "other"), "radio_icon.png"))
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        self.window.fill(PAPER)
         pygame.display.set_caption("Room Explorer")
         pygame.display.set_icon(radio_icon)
 
@@ -429,8 +430,6 @@ class Game(pygame.Surface):
 
                 else:
                     self.response = "I can't use an item I don't have."
-            
-        
 
 
         #Code Items
@@ -483,6 +482,82 @@ class Game(pygame.Surface):
                             self.library.locked = False
 
                         break
+
+
+                
+    def handle_inventory(self):
+        """print player's inventory"""
+
+        if len(self.inventory) != 0:
+            self.response = f"\n You are carrying: "
+            for i in range(len(self.inventory)):
+                self.response += f"\n{self.inventory[i].name} --- {self.inventory[i].description}\n"
+
+        else:
+            self.response = "You have no items in your inventory"
+
+    
+    def handle_help(self):
+        """print instructions"""
+
+        controls = open(os.path.join("room_explorer_info", "controls.txt"))
+        self.response = controls.read()
+        controls.close()
+
+
+    def handle_inventory(self):
+        """print player's inventory"""
+
+    
+    def handle_map(self):
+        """display a map of the building"""
+
+        map = open(r"room_explorer_info\map.txt")
+            self.response = map.read()
+            map.close()
+
+
+    def handle_room_description(self):
+        """re-print room description"""
+
+        self.response = str(self.current_room)
+
+
+    def handle_special(self, action:str):
+        """Deals with special actions and Easter eggs"""
+
+        if action in ["scream", "aaa", "temporarily go insane" ]:
+            self.response = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!!"
+            self.response += "\nI feel much better now."
+            mixer.music.stop()
+            mixer.music.load(SCREAM)
+            mixer.music.set_volume(0.7)
+            mixer.music.play()
+            for i in range(10):
+                pass
+            restart_bg_music()
+        
+        if action == "escape":
+            self.response = "Wow, that's a great idea. I wish I had thought of that earlier."
+
+        if action in ["magic", "teleport", "time travel"]:
+            self.response = "I mean I guess I could, but that feels like cheating"
+
+        if action in ["cry", "boo hoo", "wahhh"]:
+            self.response = "No, I can't give up hope yet."
+
+        if action in ["burn house", "arson", "light everything on fire", "commit arson"]:
+            self.response = "I don't have anything to start a fire with."
+            for i in range(len(self.inventory)):
+                temp = self.inventory[i]
+                if temp.name == "matches":
+                    self.response = "You set fire to the room. If you can't get out, you'll take the whole house with you."
+                    RUNNING = False
+
+        if action in ["celebrate", "woop woop", "cheer"]:
+            self.response = "Yay! I accomplished something!"
+
+
 
     #gives player a hint based on the room they're in
     def hint(self):
@@ -538,6 +613,7 @@ class Game(pygame.Surface):
 
     def play(self):
 
+        #intro cutscene
         intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
         intro += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
         intro += "pouring rain. Luckily, you found an old house to take shelter in. It looks like it's been abandoned\n"
@@ -552,11 +628,13 @@ class Game(pygame.Surface):
         mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
         mixer.music.play()
-        input("\n\n\t\t\t\tPress enter to begin.")
+        sleep(8)
+        # input("\n\n\t\t\t\tPress enter to begin.")
         mixer.music.stop()
 
         print(self.current_room)
-        self.update_graphics()
+        pygame.draw.rect(self.window, PAPER, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
+        self.update_graphics(" ")
 
         #set up background music
         restart_bg_music()
@@ -588,51 +666,60 @@ class Game(pygame.Surface):
                     break
 
             #get user input
+            action = " "
+
             if event.type == pygame.KEYDOWN: 
   
                 # Check for backspace 
-                if event.key == pygame.K_BACKSPACE: 
+                if event.key == K_BACKSPACE: 
                 
                     # get text input from 0 to -1 i.e. end. 
-                    action = action[:-1] 
+                    action = user_input[:-1] 
+
+                elif event.key == K_RETURN: #finalize input and send that string to the next part of the code
+                    self.evaluate_input(action)
+                    action = ""
     
                 # Unicode standard is used for string 
                 # formation 
                 else: 
                     action += event.unicode
+                    action = action.lower()
 
 
-            #create response for this loop
-            self.response = "Invalid input. Try the format [verb] [noun]."
-            self.response += "\nType 'a' for a list of accepted commands."
-
-            action = input().lower()
-
-            #end game
-            if action in ["x","exit", "quit", "bye", "q", "farewell"]:
-                RUNNING = False
-                break
+            #extra actions
+            if action in [
+            "scream", 
+            "aaa", 
+            "temporarily go insane", 
+            "escape", 
+            "magic", 
+            "teleport", 
+            "time travel", 
+            "cry", 
+            "boo hoo", 
+            "wahhh", 
+            "burn house", 
+            "arson", 
+            "light everything on fire", 
+            "commit arson", 
+            "celebrate", 
+            "woop woop", 
+            "cheer"]:
+                self.handle_special(action)
+            
 
             #print a list of all items in inventory
             if action in ["i", "inventory"]:
-                if len(self.inventory) != 0:
-                    self.response = f"\n You are carrying: "
-                    for i in range(len(self.inventory)):
-                        self.response += f"\n{self.inventory[i].name} --- {self.inventory[i].description}\n"
-                else:
-                    self.response = "You have no items in your inventory"
+                self.handle_inventory()
             
             #print the list of accepted commands
             if action in ["a", "controls", "help"]:
-                controls = open(os.path.join("room_explorer_info", "controls.txt"))
-                self.response = controls.read()
-                controls.close()
+                self.handle_help()
 
             #print the map
             if action in ["m", "map"]:
-                map = open(r"room_explorer_info\map.txt")
-                self.response = map.read()
-                map.close()
+                self.handle_map()
                
             #run credits sequence
             if action in ["c", "credits"]:
@@ -640,39 +727,8 @@ class Game(pygame.Surface):
 
             #print room description again
             if action in ["r", "room"]:
-                self.response = str(self.current_room)
-
-            #extra actions
-            if action in ["scream", "aaa", "temporarily go insane" ]:
-                self.response = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!!"
-                self.response += "\nI feel much better now."
-                mixer.music.stop()
-                mixer.music.load(SCREAM)
-                mixer.music.set_volume(0.7)
-                mixer.music.play()
-                for i in range(10):
-                    pass
-                restart_bg_music()
+                self.handle_room_description()
             
-            if action == "escape":
-                self.response = "Wow, that's a great idea. I wish I had thought of that earlier."
-
-            if action in ["magic", "teleport", "time travel"]:
-                self.response = "I mean I guess I could, but that feels like cheating"
-
-            if action in ["cry", "boo hoo", "wahhh"]:
-                self.response = "No, I can't give up hope yet."
-
-            if action in ["burn house", "arson", "light everything on fire", "commit arson"]:
-                self.response = "I don't have anything to start a fire with."
-                for i in range(len(self.inventory)):
-                    temp = self.inventory[i]
-                    if temp.name == "matches":
-                        self.response = "You set fire to the room. If you can't get out, you'll take the whole house with you."
-                        RUNNING = False
-
-            if action in ["celebrate", "woop woop", "cheer"]:
-                self.response = "Yay! I accomplished something!"
                     
             if action in ["h", "hint"]:
                 self.hint()
@@ -699,7 +755,7 @@ class Game(pygame.Surface):
             if self.anim_delay == 7:
                 self.anim_delay = 0
                 print(self.response)
-                self.update_graphics()
+                self.update_graphics(action)
             
         
         
@@ -744,7 +800,7 @@ class Game(pygame.Surface):
         self.update_graphics()
 
     
-    def update_graphics(self):
+    def update_graphics(self, action):
         """updates images and text shown on screen"""
 
         #images
@@ -753,6 +809,8 @@ class Game(pygame.Surface):
         #text
         self.response += " What would you like to do? "
         self.draw_text(self.response, self.message_box)
+
+        self.draw_text(action, self.input_box)
 
         pygame.display.update()
 
@@ -780,5 +838,16 @@ class Game(pygame.Surface):
 
             #remove text already printed
             text = text[i:]
+
         
+    def evaluate_input(self, action:str):
+
+        #create response for this loop
+        self.response = "Invalid input. Try the format [verb] [noun]."
+        self.response += "\nType 'a' for a list of accepted commands."
+
+        #end game
+        if action in ["x","exit", "quit", "bye", "q", "farewell"]:
+            RUNNING = False
+            break
 

@@ -11,6 +11,9 @@ MAGENTA = [0xBC, 0x00, 0xBC]
 YELLOW = [0xBC, 0xBC, 0x00]
 INK = [0x0A, 0x01, 0x1C]
 PAPER = [0xEB, 0xED, 0xD1]
+GRAPHITE = [0x6D, 0x75, 0x75]
+BLOOD = [0x52, 0x0a, 0x02]
+
 
 # keys from pygame
 from pygame.locals import (
@@ -23,7 +26,9 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
     K_SPACE,
-    MOUSEBUTTONUP
+    MOUSEBUTTONUP,
+    K_BACKSPACE,
+    K_RETURN
 )
 
 #paths to sounds

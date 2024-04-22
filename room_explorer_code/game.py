@@ -25,7 +25,7 @@ class Game(pygame.Surface):
         self.entry_hall, self.kitchen, self.living_room, self.library, self.bathroom, self.attic, self.basement, self.greenhouse, self.escape = self.create_rooms()
         self.bonuses_found = 0
         self.message_box = pygame.Rect(Room.IMAGE_SIZE[0], 0, Game.WIDTH - Room.IMAGE_SIZE[0], Room.IMAGE_SIZE[1],)
-        self.input_box = pygame.Rect(0, Game.HEIGHT - Room.IMAGE_SIZE[1], Game.HEIGHT - Room.IMAGE_SIZE[1], Game.WIDTH)
+        self.input_box = pygame.Rect(0, Room.IMAGE_SIZE[1], Game.HEIGHT - Room.IMAGE_SIZE[1], Game.WIDTH)
         
         #initialize pygame
         pygame.init()
@@ -512,9 +512,9 @@ class Game(pygame.Surface):
     def handle_map(self):
         """display a map of the building"""
 
-        map = open(r"room_explorer_info\map.txt")
-            self.response = map.read()
-            map.close()
+        house_map = open(os.path.join("room_explorer_info", "house_map.txt"))
+        self.response = house_map.read()
+        house_map.close()
 
 
     def handle_room_description(self):
@@ -620,6 +620,7 @@ class Game(pygame.Surface):
         intro += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
         intro += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
         intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
+        intro += "\t\t\t\tPress enter to begin."
 
         self.draw_text(intro, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
         pygame.display.update()
@@ -627,9 +628,26 @@ class Game(pygame.Surface):
         print(self.response)
         mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
-        mixer.music.play()
-        sleep(8)
-        # input("\n\n\t\t\t\tPress enter to begin.")
+
+
+        paused = True
+        while paused:
+            for event in pygame.event.get():
+                #end game when x button or escape key is pressed
+                if (event.type == KEYDOWN and event.key == K_ESCAPE):
+                    RUNNING = False
+                    break
+                
+                elif (event.type == QUIT):
+                    RUNNING = False
+                    break
+
+                elif event.type == KEYDOWN and event.key == K_RETURN:
+                    paused = False
+                    break
+
+            
+
         mixer.music.stop()
 
         print(self.current_room)
@@ -639,10 +657,6 @@ class Game(pygame.Surface):
         #set up background music
         restart_bg_music()
 
-        #start clock
-        self.clock = pygame.time.Clock()
-        self.delta_time = self.clock.tick(60)
-        self.anim_delay = 0
 
         RUNNING = True
 
@@ -665,100 +679,32 @@ class Game(pygame.Surface):
                     RUNNING = False
                     break
 
-            #get user input
-            action = " "
+                #get user input
+                action = " "
 
-            if event.type == pygame.KEYDOWN: 
-  
-                # Check for backspace 
-                if event.key == K_BACKSPACE: 
+                if event.type == pygame.KEYDOWN: 
                 
-                    # get text input from 0 to -1 i.e. end. 
-                    action = user_input[:-1] 
-
-                elif event.key == K_RETURN: #finalize input and send that string to the next part of the code
-                    self.evaluate_input(action)
-                    action = ""
-    
-                # Unicode standard is used for string 
-                # formation 
-                else: 
-                    action += event.unicode
-                    action = action.lower()
-
-
-            #extra actions
-            if action in [
-            "scream", 
-            "aaa", 
-            "temporarily go insane", 
-            "escape", 
-            "magic", 
-            "teleport", 
-            "time travel", 
-            "cry", 
-            "boo hoo", 
-            "wahhh", 
-            "burn house", 
-            "arson", 
-            "light everything on fire", 
-            "commit arson", 
-            "celebrate", 
-            "woop woop", 
-            "cheer"]:
-                self.handle_special(action)
-            
-
-            #print a list of all items in inventory
-            if action in ["i", "inventory"]:
-                self.handle_inventory()
-            
-            #print the list of accepted commands
-            if action in ["a", "controls", "help"]:
-                self.handle_help()
-
-            #print the map
-            if action in ["m", "map"]:
-                self.handle_map()
-               
-            #run credits sequence
-            if action in ["c", "credits"]:
-                self.credits()
-
-            #print room description again
-            if action in ["r", "room"]:
-                self.handle_room_description()
-            
+                    # Check for backspace 
+                    if event.key == K_BACKSPACE: 
                     
-            if action in ["h", "hint"]:
-                self.hint()
+                        # get text input from 0 to -1 i.e. end. 
+                        action = action[:-1] 
 
-            words = action.split(" ")
-            if len(words) == 2:
-                verb = words[0]
-                noun = words[1]
+                    elif event.key == K_RETURN: #finalize input and send that string to the next part of the code
+                        self.evaluate_input(action)
+                        print(self.response)
+                        self.update_graphics(action)
+                        action = ""
 
-                if verb in ["g", "go"]:
-                    self.handle_go(noun)
-                elif verb in ["l", "look", "inspect"]:
-                    self.handle_look(noun)
-                elif verb in ["t", "take", "grab"]:
-                    self.handle_take(noun)
-                elif verb in ["d", "drop", "remove"]:
-                    self.handle_drop(noun)
-                elif verb in ["u", "use"]:
-                    self.handle_use(noun)
-                            
+
+                    # Unicode standard is used for string 
+                    # formation 
+                    else: 
+                        action += event.unicode
+                        action = action.lower()
+
+
                 
-            self.anim_delay += 1
-
-            if self.anim_delay == 7:
-                self.anim_delay = 0
-                print(self.response)
-                self.update_graphics(action)
-            
-        
-        
 
 
 
@@ -774,6 +720,7 @@ class Game(pygame.Surface):
         print(f"\nYou completed the game!\nYou found {self.bonuses_found}/3 bonuses. Play again to find them both!\n")
         RUNNING = False
         self.credits()
+
 
     def credits(self):
         self.response = ("\t\tRoom Explorer")
@@ -849,5 +796,66 @@ class Game(pygame.Surface):
         #end game
         if action in ["x","exit", "quit", "bye", "q", "farewell"]:
             RUNNING = False
-            break
+
+        #extra actions
+        if action in [
+        "scream", 
+        "aaa", 
+        "temporarily go insane", 
+        "escape", 
+        "magic", 
+        "teleport", 
+        "time travel", 
+        "cry", 
+        "boo hoo", 
+        "wahhh", 
+        "burn house", 
+        "arson", 
+        "light everything on fire", 
+        "commit arson", 
+        "celebrate", 
+        "woop woop", 
+        "cheer"]:
+            self.handle_special(action)
+        
+
+        #print a list of all items in inventory
+        if action in ["i", "inventory"]:
+            self.handle_inventory()
+        
+        #print the list of accepted commands
+        if action in ["a", "controls", "help"]:
+            self.handle_help()
+
+        #print the map
+        if action in ["m", "map"]:
+            self.handle_map()
+           
+        #run credits sequence
+        if action in ["c", "credits"]:
+            self.credits()
+
+        #print room description again
+        if action in ["r", "room"]:
+            self.handle_room_description()
+        
+                
+        if action in ["h", "hint"]:
+            self.hint()
+
+        words = action.split(" ")
+        if len(words) == 2:
+            verb = words[0]
+            noun = words[1]
+
+            if verb in ["g", "go"]:
+                self.handle_go(noun)
+            elif verb in ["l", "look", "inspect"]:
+                self.handle_look(noun)
+            elif verb in ["t", "take", "grab"]:
+                self.handle_take(noun)
+            elif verb in ["d", "drop", "remove"]:
+                self.handle_drop(noun)
+            elif verb in ["u", "use"]:
+                self.handle_use(noun)
 

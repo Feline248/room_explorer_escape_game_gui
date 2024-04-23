@@ -4,7 +4,6 @@
 from room import Room
 from items import Item, Grabbable, SoundItem, CodeItem
 import hints
-import pygame
 from pygame import mixer
 from time import sleep
 from constants import *
@@ -620,12 +619,12 @@ class Game(pygame.Surface):
         intro += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
         intro += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
         intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
-        intro += "\t\t\t\tPress enter to begin."
+        intro += "\n\n\t\t\t\tPress enter to begin."
 
         self.draw_text(intro, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
         pygame.display.update()
         
-        print(self.response)
+        print(intro)
         mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
 
@@ -635,18 +634,17 @@ class Game(pygame.Surface):
             for event in pygame.event.get():
                 #end game when x button or escape key is pressed
                 if (event.type == KEYDOWN and event.key == K_ESCAPE):
-                    RUNNING = False
+                    paused = False
                     break
                 
                 elif (event.type == QUIT):
-                    RUNNING = False
+                    paused = False
                     break
 
                 elif event.type == KEYDOWN and event.key == K_RETURN:
                     paused = False
                     break
 
-            
 
         mixer.music.stop()
 
@@ -700,8 +698,19 @@ class Game(pygame.Surface):
                     # Unicode standard is used for string 
                     # formation 
                     else: 
-                        action += event.unicode
-                        action = action.lower()
+                        action += event.unicode.lower()
+
+        ending = True
+        while ending:
+            for event in pygame.event.get():
+                #end game when x button or escape key is pressed
+                if (event.type == KEYDOWN and event.key == K_ESCAPE):
+                    ending = False
+                    break
+                
+                elif (event.type == QUIT):
+                    ending = False
+                    break
 
 
                 

@@ -2,8 +2,7 @@
 #Room class with name, items, description, exits, and image
 
 from items import Item, Grabbable, SoundItem, CodeItem
-import pygame
-import os
+from constants import *
 
 
 class Room:

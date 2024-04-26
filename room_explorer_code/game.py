@@ -14,8 +14,8 @@ from miscellaneous_functions import *
 
 class Game(pygame.Surface):
     #define size of window
-    WIDTH = 1300
-    HEIGHT = 600
+    WIDTH = 1525
+    HEIGHT = 650
     
     def __init__(self):
 
@@ -24,7 +24,7 @@ class Game(pygame.Surface):
         self.entry_hall, self.kitchen, self.living_room, self.library, self.bathroom, self.attic, self.basement, self.greenhouse, self.escape = self.create_rooms()
         self.bonuses_found = 0
         self.message_box = pygame.Rect(Room.IMAGE_SIZE[0], 0, Game.WIDTH - Room.IMAGE_SIZE[0], Room.IMAGE_SIZE[1],)
-        self.input_box = pygame.Rect(0, Room.IMAGE_SIZE[1], Game.HEIGHT - Room.IMAGE_SIZE[1], Game.WIDTH)
+        self.input_box = pygame.Rect(0, Room.IMAGE_SIZE[1], Game.WIDTH, Game.HEIGHT - Room.IMAGE_SIZE[1])
         
         #initialize pygame
         pygame.init()
@@ -84,14 +84,14 @@ class Game(pygame.Surface):
         bomb_shelter.locked = True
 
         #set room descriptions
-        entry_hall.room_description = "There's not much in here other than a coat hangar, an umbrella stand, and a few cabinets and shelves.\nThe front door has roses carved into the doorframe and pink stained glass diamond windows on either side.\n"
-        kitchen.room_description = "It is dusty and looks like it hasn't been used in years. The walls are covered in fading vine-patterned paper.\nAll of the appliances are old-fashioned lemon yellow enamel, with dark metal showing through where it's been chipped.\nThere's a window on one side of the room with tattered yellow and white checkered curtains,\nbut it's so choked in vines that you can't see out of it. "
-        living_room.room_description = "You can hear the sound of rushing water in the distance. There's a moldy-looking couch on the far side of the room.\nThe floor has thick grayish brown carpet that might have once been another color.\nYou try your best not to think about all the health hazards in here."
-        library.room_description = "The room is filled with floor to ceiling bookshelves containing every possible kind of book. Ancient leather bound tomes\non obscure subjects, cheap paperback novels, college textbooks, old journals and spiral bound notebooks,\ntravel logs, atlases, and out of print encyclopedias. "
-        bathroom.room_description = "The bathroom is small, but overall pretty normal-looking. It has light blue tiles going about halfway up the walls,\nwith plain white paint above them. The sink and counter are linoleum made to look like marble."
-        attic.room_description = "The attic has exposed wooden rafters along the slanted ceiling and peeling pink flower patterned wallpaper.\nThere's a black rug with pink roses on it in the center of the room. It looks like there used to be windows along one wall, but they're all boarded up."
-        basement.room_description = "The basement is long and narrow, with a concrete floor and walls. It's almost empty, except for a few wooden crates\nand a door at the opposite end from the stairs. There's a strange contraption next to the door. Maybe it's some kind of lock?"
-        greenhouse.room_description = "It's completely overgrown with all kinds of plants. You can hear the rain tapping against the glass above you.\nThere must be a leak somewhere keeping the plants alive."
+        entry_hall.room_description = "There's not much in here other than a coat hangar, an\numbrella stand, and a few cabinets and shelves. The\nfront door has roses carved into the doorframe\nand pink stained glass diamond windows on either side."
+        kitchen.room_description = "It is dusty and looks like it hasn't been used in years.\nThe walls are covered in fading vine-patterned paper.\nAll of the appliances are old-fashioned lemon\nyellow enamel, with dark metal showing through where\nit's been chipped. There's a window on one side of the\nroom with tattered yellow and white checkered curtains,\nbut it's so choked in vines that you can't see out of it. "
+        living_room.room_description = "You can hear the sound of rushing water in the\ndistance. There's a moldy-looking couch on the far side\nof the room. The floor has thick grayish brown carpet\nthat might have once been another color. You try\nyour best not to think about all\nthe health hazards in here."
+        library.room_description = "The room is filled with floor to ceiling bookshelves\ncontaining every possible kind of book. Ancient leather\nbound tomes on obscure subjects, cheap paperback\nnovels, college textbooks, old journals and spiral\nbound notebooks, travel logs, atlases, and out of print\nencyclopedias. "
+        bathroom.room_description = "The bathroom is small, but overall pretty\nnormal-looking. It has light blue tiles going about halfway up the\nwalls, with plain white paint above them. The\nsink and counter are linoleum made to look like marble."
+        attic.room_description = "The attic has exposed wooden rafters along the slanted\nceiling and peeling pink flower patterned wallpaper.\nThere's a black rug with pink roses on it in the\ncenter of the room. It looks like there used to be\nwindows along one wall, but they're allboarded up."
+        basement.room_description = "The basement is long and narrow, with a concrete floor\nand walls. It's almost empty, except for a few wooden\ncrates and a door at the opposite end from the\nstairs. There's a strange contraption next to the\ndoor. Maybe it's some kind of lock?"
+        greenhouse.room_description = "It's completely overgrown with all kinds of plants.\nYou can hear the rain tapping against the glass above\nyou. There must be a leak somewhere keeping the\nplants alive."
         bomb_shelter.room_description = ""
 
         #add exits
@@ -125,73 +125,72 @@ class Game(pygame.Surface):
         entry_hall.add_item("shelf", "It has a few picture frames on it, but all of them are empty.")                                                                   #entry hall
         entry_hall.add_item("door", "The door still won't open. Maybe the latch broke?")
 
-        greenhouse.add_item("red_pot", "A red flower pot with a sprawling succulent. The label says 'Christmas Cactus'.")                                                                   #greenhouse
-        greenhouse.add_item("blue_pot", "A tall, narrow pot with what looks like bamboo growing in it. Some of it has escaped and is growing up through cracks in the floor.")
-        greenhouse.add_item("brown_pot", "A small pot with a shimmery brown glaze and wilty red and orange flowers.")
-        greenhouse.add_item("broken_pot", "A few fragments of a light green ceramic flowerpot. There's dirt and dead leaves scattered across the ground near it.")
-        greenhouse.add_item("trellis", "A rotting wooden trellis is leaning against the wall, threatening to collapse under the weight of long-dead vines.")
+        greenhouse.add_item("red_pot", "A red flower pot with a sprawling succulent.\nThe label says 'Christmas Cactus'.")                                                                   #greenhouse
+        greenhouse.add_item("blue_pot", "A tall, narrow pot with what looks like bamboo\ngrowing in it. Some of it has escaped and is\ngrowing up through cracks in the floor.")
+        greenhouse.add_item("brown_pot", "A small pot with a shimmery brown glaze and\nwilty red and orange flowers.")
+        greenhouse.add_item("broken_pot", "A few fragments of a light green ceramic\nflowerpot. There's dirt and dead leaves scattered\nacross the ground near it.")
+        greenhouse.add_item("trellis", "A rotting wooden trellis is leaning against\nthe wall, threatening to collapse under the weight\nof long-dead vines.")
                
-        kitchen.add_item("cabinet", "There's a set of wooden cabinets above the stove. Inside you see a few cracked dishes and a box of matches.")                      #kitchen
+        kitchen.add_item("cabinet", "There's a set of wooden cabinets above the stove.\nInside you see a few cracked dishes and a box of matches.")                      #kitchen
         kitchen.add_item("chair", "There is a broken chair in one corner.")
-        kitchen.add_item("flowers", "A glass vase of dried out roses sits on top of a battered table. The flowers are shades of pale brownish pink and yellow.")
+        kitchen.add_item("flowers", "A glass vase of dried out roses sits on top of a\nbattered table. The flowers are shades of pale brownish\npink and yellow.")
 
-        attic.add_item("bed", "One side of the room is occupied by a large bed with flower-patterned sheets and blue pillows.")                                                                        #attic
-        attic.add_item("armchair", "There's a leather airmchair in one corner. It's very comfy.")
-        attic.add_item("bowls", "There are two shallow bowls on the floor. They look like they might be food and water dishes for a pet.")
+        attic.add_item("bed", "One side of the room is occupied by a large bed\nwith flower-patterned sheets and blue pillows.")                                                                        #attic
+        attic.add_item("armchair", "There's a leather airmchair in one corner.\nIt's very comfy.")
+        attic.add_item("bowls", "There are two shallow bowls on the floor. They\nlook like they might be food and water dishes for a pet.")
 
-        living_room.add_item("piano", "There is a beautiful piano in one corner of the room. It has a piece of hand-written sheet music sitting on top of it.")                                               #living room
+        living_room.add_item("piano", "There is a beautiful piano in one corner of the room.\nIt has a piece of hand-written sheet music sitting on top of it.")                                               #living room
 
-        library.add_item("typewriter", "There's some paper sticking out. It says: \n'vc ccc./  n                                          jnmfcdok.l,;'\nI think whoever lived here must have had a cat.")          #library
-        library.add_item("book", "An old cookbook is laying on the desk. There's a highlighted passage:\n'There's lots of debate over the best way to organize the ingredients in a recipe, but I always like to put mine in alphabetical order by the ingredient name.'")
-        library.add_item("globe", "An old fashioned globe, complete with doodles of sea monsters lurking in the ocean.")
-        library.add_item("fireplace", "A large brick fireplace. It's too bad there's no wood, it's kind of cold in here.")
+        library.add_item("typewriter", "There's some paper sticking out. It says: \n'vc ccc./  n                     \n                     jnmfcdok.l,;'\nI think whoever lived here must have had a cat.")          #library
+        library.add_item("book", "An old cookbook is laying on the desk. There's a\nhighlighted passage:\n'There's lots of debate over the best way to organize\nthe ingredients in a recipe, but I always like to put mine\nin alphabetical order by the ingredient name.'")
+        library.add_item("globe", "An old fashioned globe, complete with doodles of\nsea monsters lurking in the ocean.")
+        library.add_item("fireplace", "A large brick fireplace. It's too bad there's\nno wood, it's kind of cold in here.")
 
-        bathroom.add_item("painting", "An oil painting of a bouquet of roses hangs on the wall across from the door.")                                                                     #bathroom
-        bathroom.add_item("tiles", "One of the tiles on the wall is a slightly more greenish color than the others. When you touch it, it comes loose.\nIt has the symbols ._.    .    _..      ._ _.    ._..    ._    _.    _ written on the back.")
+        bathroom.add_item("painting", "An oil painting of a bouquet of roses hangs\non the wall across from the door.")                                                                     #bathroom
+        bathroom.add_item("tiles", "One of the tiles on the wall is a slightly more\ngreenish color than the others. When you touch it,\nit comes loose. It has the symbols\n._.    .    _..      ._ _.    ._..    ._    _.    _ \nwritten on the back.")
       
-        basement.add_item("shelf", "One wall is covered with rows of wooden shelves, but they're all empty.")                                                                     #basement
-        basement.add_item("door", "The door is securely locked. I'll have to find some other way to get it open.")
-        basement.add_item("contraption", "It looks a little like an old fashioned scale with a cup on one of the trays. There's a bunch of wires running from it to the door.")
+        basement.add_item("shelf", "One wall is covered with rows of wooden shelves,\nbut they're all empty.")                                                                     #basement
+        basement.add_item("door", "The door is securely locked. I'll have to find\nsome other way to get it open.")
+        basement.add_item("contraption", "It looks a little like an old fashioned scale\nwith a cup on one of the trays. There's a bunch of\nwires running from it to the door.")
         basement.add_item("pipes", "There are some rusted pipes running along the ceiling.")
         
-        bomb_shelter.add_item("portrait", "A large, beautiful portrait. It contains a picture of a frog wearing a hat.")                                                                     #bomb_shelter
+        bomb_shelter.add_item("portrait", "A large, beautiful portrait. It contains a\npicture of a frog wearing a hat.")                                                                     #bomb_shelter
         bomb_shelter.add_item("cereal", "A box of Cheeri Tori cereal. It's probably gone bad by now...")
 
 
         #add grabbables
         entry_hall.add_grabbable("umbrella", "It's made of plain black fabric with lacy edges.")                                                        #entry hall
 
-        kitchen.add_grabbable("matches", "There's a box of matches inside one of the cabinets. I wonder if any of these still work?")                   #kitchen
+        kitchen.add_grabbable("matches", "There's a box of matches inside one of the cabinets.\nI wonder if any of these still work?")                   #kitchen
         kitchen.add_grabbable("recipe", "A recipe card for some kind of candy. It reads:\n4 cups sugar\n4.5 cups water\n2 tsp lemon juice\n1 tsp lemon zest\n1 tsp cornstarch\n1 tsp cream of tartar\n1 tsp vanilla extract\n Melt sugar with\nThe rest of the recipe is too stained to read.") 
 
         greenhouse.add_grabbable("watering_can", "A dented, dull gray metal watering can full of water.")                                               #greenhouse
 
-        attic.add_grabbable("letter", "A crinkled piece of paper that says:\nMy love, it has been far too long since we've seen each other. Someday we will be able to stay together, but for now\nthese letters are the best we can do. Even at a distance, the flames of our love are enough to keep me warm.")                                                       #library
+        attic.add_grabbable("letter", "A crinkled piece of paper that says:\nMy love, it has been far too long since we've\nseen each other. Someday we will be able to stay together,\nbut for now these letters are the best we can do.\nEven at a distance, the flames of our love are\nenough to keep me warm.")                                                       #library
 
-        basement.add_grabbable("unlabeled_record", "An old record with no label on it that looks like it might fit in the record player in the living room.")                                                                   #basement
+        basement.add_grabbable("unlabeled_record", "An old record with no label on it that looks like it might\nfit in the record player in the living room.")                                                                   #basement
 
-        living_room.add_grabbable("sheet_music", "A piece of handwritten sheet music labeled with the number '16'. It looks unfinished, but the first notes are C D E D C.")
+        living_room.add_grabbable("sheet_music", "A piece of handwritten sheet music labeled with the number\n'16'. It looks unfinished, but the first notes are C D E D C.")
 
 
         #add sound items
                                                                                                                 #kitchen
-        kitchen.add_sound_item("radio", "You turn on the old fashioned radio sitting on the counter. You hear an eerie, monotone recording of someone reciting a list of numbers:\n10 4 101    47 108 32 101 47 52 52 10    20 5 108 4 20 5 20    32 93 207 0    207 15 88 14 5 0 0 207 304 5\n62 101 32    207 32    56 4 3 32    93 5 52 88    10 4 101    207 3    32 93 5    17 47 15 5", "radio_with_static.wav")
+        kitchen.add_sound_item("radio", "You turn on the old fashioned radio sitting on the\ncounter. You hear an eerie, monotone recording of\nsomeone reciting a list of numbers:\n10 4 101    47 108 32 101 47 52 52 10    20 5 108 4 20 5 20    \n32 93 207 0    207 15 88 14 5 0 0 207 304 5\n62 101 32    207 32    56 4 3 32    93 5 52 88\n10 4 101    207 3    32 93 5    17 47 15 5", "radio_with_static.wav")
                                                                                                                 #living_room
-        living_room.add_sound_item("gramophone", "You turn on the record player and hear a beautiful recording of someone playing the flute. The tune sounds vaguely familiar.", "scarborough.wav")
-        living_room.add_sound_item("window", "You look out the window, but all you can see is a dense fog and a few withered flowers in a long-forgotten window box. The sound of water is much louder here.", "waterfall.mp3")
+        living_room.add_sound_item("gramophone", "You turn on the record player and hear a beautiful\nrecording of someone playing the flute. The tune sounds\nvaguely familiar.", "scarborough.wav")
+        living_room.add_sound_item("window", "You look out the window, but all you can see is a dense\nfog and a few withered flowers in a long-forgotten\nwindow box. The sound of water is much louder here.", "waterfall.mp3")
                                                                                                                 #bomb shelter
-        bomb_shelter.add_sound_item("", "", "")
 
 
 
         #add code items
-        entry_hall.add_code_item("cabinet", "There's an old filing cabinet with a combination lock on it. It has the number 10 scratched on the side.", "843484")                              #entry hall
+        entry_hall.add_code_item("cabinet", "There's an old filing cabinet with a combination lock on it.\nIt has the number 10 scratched on the side.", "843484")                              #entry hall
        
         living_room.add_code_item("door", "The door to the west has a large rotating combination lock on it.", "490713")                              #living room
 
         library.add_code_item("box", "There is an ornately carved wooden box with 8 dials on it.", "11214145")                              #library
 
-        attic.add_code_item("wardrobe", "There's a large wooden wardrobe near the door. Inside, it's empty except for a coat and a few spare pillowcases.\nThere's a carving on the inside wall of 4 concentric circles with letters on them. They look like they might be some kind of dials?", "rose")                              #attic
+        attic.add_code_item("wardrobe", "There's a large wooden wardrobe near the door.\nInside, it's empty except for a coat and a few spare pillowcases.\nThere's a carving on the inside wall of 4 concentric\ncircles with letters on them. They look like they might\nbe some kind of dials?", "rose")                              #attic
 
         #set current room
         self.current_room = entry_hall
@@ -211,7 +210,6 @@ class Game(pygame.Surface):
                 self.current_room = self.current_room.exit_destinations[index]
                 self.response = "You walk into a new room."
                 self.response += str(self.current_room)
-                mixer.music.stop()
 
             else:
                 self.response = "The door is locked. It won't budge."
@@ -532,8 +530,7 @@ class Game(pygame.Surface):
             mixer.music.load(SCREAM)
             mixer.music.set_volume(0.7)
             mixer.music.play()
-            for i in range(10):
-                pass
+            sleep(3)
             restart_bg_music()
         
         if action == "escape":
@@ -613,13 +610,13 @@ class Game(pygame.Surface):
     def play(self):
 
         #intro cutscene
-        intro = "\n\nDue to your incredible planning skills, the 'fun hike' you had planned turned out to be pretty\n"
-        intro += "unpleasant. Not only are you completely lost, you also forgot to check the weather, and it started\n"
-        intro += "pouring rain. Luckily, you found an old house to take shelter in. It looks like it's been abandoned\n"
-        intro += "for decades, but at least it's dry. As you close the door behind you, you hear a loud crack.\n"
-        intro += "You try to open the door to see what it was, and realize too late that the sound didn't come from\n"
-        intro += "outside. It was the door itself. It's firmly stuck, and now you'll need to find another way out."
-        intro += "\n\n\t\t\t\tPress enter to begin."
+        intro = "Due to your incredible planning skills, the 'fun hike' you had\nplanned turned out to be pretty"
+        intro += "unpleasant. Not only are you completely\nlost, you also forgot to check the weather, and it started\n"
+        intro += "pouring rain. Luckily, you found an old house to take shelter\nin. It looks like it's been abandoned"
+        intro += "for decades, but at least it's dry.\nAs you close the door behind you, you hear a loud crack.\n"
+        intro += "You try to open the door to see what it was, and realize too late\nthat the sound didn't come from"
+        intro += "outside. It was the door itself.\nIt's firmly stuck, and now you'll need to find another way out."
+        intro += "\n\n\t\t\t\t\t\tPress enter to begin."
 
         self.draw_text(intro, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
         pygame.display.update()
@@ -649,14 +646,17 @@ class Game(pygame.Surface):
         mixer.music.stop()
 
         print(self.current_room)
+        self.response = str(self.current_room)
         pygame.draw.rect(self.window, PAPER, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
         self.update_graphics(" ")
+
 
         #set up background music
         restart_bg_music()
 
 
         RUNNING = True
+        action = ""
 
         while (RUNNING):
 
@@ -678,27 +678,26 @@ class Game(pygame.Surface):
                     break
 
                 #get user input
-                action = " "
 
                 if event.type == pygame.KEYDOWN: 
                 
                     # Check for backspace 
-                    if event.key == K_BACKSPACE: 
-                    
-                        # get text input from 0 to -1 i.e. end. 
+                    if event.key == K_BACKSPACE:  
                         action = action[:-1] 
 
                     elif event.key == K_RETURN: #finalize input and send that string to the next part of the code
                         self.evaluate_input(action)
+                        self.response += "\nWhat would you like to do?"
                         print(self.response)
-                        self.update_graphics(action)
                         action = ""
 
-
-                    # Unicode standard is used for string 
-                    # formation 
+                    # add to string
                     else: 
-                        action += event.unicode.lower()
+                        action += event.unicode
+                        action = action.lower()
+
+                    
+                    self.update_graphics(action)
 
         ending = True
         while ending:
@@ -762,8 +761,11 @@ class Game(pygame.Surface):
         #images
         self.window.blit(self.current_room.image, (0,0))
 
+        #blank out old text
+        pygame.draw.rect(self.window, PAPER, self.message_box)
+        pygame.draw.rect(self.window, PAPER, self.input_box)
+
         #text
-        self.response += " What would you like to do? "
         self.draw_text(self.response, self.message_box)
 
         self.draw_text(action, self.input_box)
@@ -775,25 +777,14 @@ class Game(pygame.Surface):
         current_y = rect.top
         font_height = self.font.size("Tg")[1]
 
-        while text:
-            i = 0
+        text = text.split("\n")
 
-            #determine width of line
-            while self.font.size(text[:i])[0] < rect.width and i < len(text):
-                i += 1
-
-            #adjust for words
-            if i < len(text):
-                i = text.rfind(" ", 0, i) + 1
-
+        for line in text:
             #render text to screen
-            self.window.blit(self.font.render(text[:i], False, INK, PAPER), (rect.left, current_y))
-
+            self.window.blit(self.font.render(line, False, INK, PAPER), (rect.left, current_y))
             #move to next line
             current_y += font_height + LINE_SPACING
 
-            #remove text already printed
-            text = text[i:]
 
         
     def evaluate_input(self, action:str):

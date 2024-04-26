@@ -1,17 +1,17 @@
-i, inventory = open inventory
-x, q, quit, exit, bye = quit game
-l, look, inspect = observe an item (item name)
-t, take, grab = pick up an item (item name)
-d, drop, remove = drop an item / remove from inventory (item name)
-g, go = go through specified exit (exit direction)
-u, use = use an item (item name)
-y, yes = answer yes to questions
-n, no = answer no to questions
-a, controls, help = show controls list
-c, credits = play credits sequence
-h, hint = get a hint for the room you're in
-r, room = re-print the room description
-m, map = print map of house
+i, inventory = open inventory | 
+x, q, quit, exit, bye = quit game | 
+l, look, inspect = observe an item (item name) | 
+t, take, grab = pick up an item (item name) | 
+d, drop, remove = drop an item / remove from inventory (item name) | 
+g, go = go through specified exit (exit direction) | 
+u, use = use an item (item name) | 
+y, yes = answer yes to questions | 
+n, no = answer no to questions | 
+a, controls, help = show controls list | 
+c, credits = play credits sequence | 
+h, hint = get a hint for the room you're in | 
+r, room = re-print the room description | 
+m, map = print map of house | 
 
 Note: replace any spaces in nouns with underscores.
 Ex. rusty key becomes rusty_key

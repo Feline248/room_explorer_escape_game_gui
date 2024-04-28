@@ -122,7 +122,7 @@ class Game(pygame.Surface):
 
 
         #add regular items
-        entry_hall.add_item("shelf", "It has a few picture frames on it, but all of them are empty.")                                                                   #entry hall
+        entry_hall.add_item("shelf", "It has a few picture frames on it, but all of them are \nempty.")                                                                   #entry hall
         entry_hall.add_item("door", "The door still won't open. Maybe the latch broke?")
 
         greenhouse.add_item("red_pot", "A red flower pot with a sprawling succulent.\nThe label says 'Christmas Cactus'.")                                                                   #greenhouse
@@ -139,14 +139,14 @@ class Game(pygame.Surface):
         attic.add_item("armchair", "There's a leather airmchair in one corner.\nIt's very comfy.")
         attic.add_item("bowls", "There are two shallow bowls on the floor. They\nlook like they might be food and water dishes for a pet.")
 
-        living_room.add_item("piano", "There is a beautiful piano in one corner of the room.\nIt has a piece of hand-written sheet music sitting on top of it.")                                               #living room
+        living_room.add_item("piano", "There is a beautiful piano in one corner of the room.\nIt has a piece of hand-written sheet music sitting on\ntop of it.")                                               #living room
 
         library.add_item("typewriter", "There's some paper sticking out. It says: \n'vc ccc./  n                     \n                     jnmfcdok.l,;'\nI think whoever lived here must have had a cat.")          #library
-        library.add_item("book", "An old cookbook is laying on the desk. There's a\nhighlighted passage:\n'There's lots of debate over the best way to organize\nthe ingredients in a recipe, but I always like to put mine\nin alphabetical order by the ingredient name.'")
+        library.add_item("book", "An old cookbook is laying on the desk. There's a\nhighlighted passage:\n'There's lots of debate over the best way to organize\nthe ingredients in a recipe, but I always like to put \nmine in alphabetical order by the ingredient name.'")
         library.add_item("globe", "An old fashioned globe, complete with doodles of\nsea monsters lurking in the ocean.")
         library.add_item("fireplace", "A large brick fireplace. It's too bad there's\nno wood, it's kind of cold in here.")
 
-        bathroom.add_item("painting", "An oil painting of a bouquet of roses hangs\non the wall across from the door.")                                                                     #bathroom
+        bathroom.add_item("painting", "An oil painting of a bouquet of roses hangs on the \nwall across from the door.")                                                                     #bathroom
         bathroom.add_item("tiles", "One of the tiles on the wall is a slightly more\ngreenish color than the others. When you touch it,\nit comes loose. It has the symbols\n._.    .    _..      ._ _.    ._..    ._    _.    _ \nwritten on the back.")
       
         basement.add_item("shelf", "One wall is covered with rows of wooden shelves,\nbut they're all empty.")                                                                     #basement
@@ -168,9 +168,9 @@ class Game(pygame.Surface):
 
         attic.add_grabbable("letter", "A crinkled piece of paper that says:\nMy love, it has been far too long since we've\nseen each other. Someday we will be able to stay together,\nbut for now these letters are the best we can do.\nEven at a distance, the flames of our love are\nenough to keep me warm.")                                                       #library
 
-        basement.add_grabbable("unlabeled_record", "An old record with no label on it that looks like it might\nfit in the record player in the living room.")                                                                   #basement
+        basement.add_grabbable("unlabeled_record", "An old record with no label on it that looks like it \nmight fit in the record player in the living room.")                                                                   #basement
 
-        living_room.add_grabbable("sheet_music", "A piece of handwritten sheet music labeled with the number\n'16'. It looks unfinished, but the first notes are C D E D C.")
+        living_room.add_grabbable("sheet_music", "A piece of handwritten sheet music labeled with the \nnumber '16'. It looks unfinished, but the first notes are: \nC D E D C.")
 
 
         #add sound items
@@ -184,13 +184,13 @@ class Game(pygame.Surface):
 
 
         #add code items
-        entry_hall.add_code_item("cabinet", "There's an old filing cabinet with a combination lock on it.\nIt has the number 10 scratched on the side.", "843484")                              #entry hall
+        entry_hall.add_code_item("cabinet", "There's an old filing cabinet with a combination lock \non it. It has the number 10 scratched on the side.", "843484")                              #entry hall
        
-        living_room.add_code_item("door", "The door to the west has a large rotating combination lock on it.", "490713")                              #living room
+        living_room.add_code_item("door", "The door to the west has a large rotating combination \nlock on it.", "490713")                              #living room
 
-        library.add_code_item("box", "There is an ornately carved wooden box with 8 dials on it.", "11214145")                              #library
+        library.add_code_item("box", "There is an ornately carved wooden box with 8 dials \non it.", "11214145")                              #library
 
-        attic.add_code_item("wardrobe", "There's a large wooden wardrobe near the door.\nInside, it's empty except for a coat and a few spare pillowcases.\nThere's a carving on the inside wall of 4 concentric\ncircles with letters on them. They look like they might\nbe some kind of dials?", "rose")                              #attic
+        attic.add_code_item("wardrobe", "There's a large wooden wardrobe near the door.\nInside, it's empty except for a coat and a few spare \npillowcases. There's a carving on the inside wall of 4\nconcentric circles with letters on them. They look like\nthey might be some kind of dials?", "rose")                              #attic
 
         #set current room
         self.current_room = entry_hall
@@ -223,20 +223,35 @@ class Game(pygame.Surface):
                 
                 #play sound when player looks at a sound item
                 if type(temp) == SoundItem:
+                    mixer.music.stop()
                     temp.play_sound()
+                    self.restart_bg_music()
+
 
                 #kill player if they climb out the window
                 if temp.name == "window":
-                    print(self.response)
-                    answer = input("Try to escape by climbing out the window? y/n")
-                    if answer in ["y", "yes", "sure", "absolutely"]:
-                        self.death()
-                        RUNNING = False
-                        self.response = "..."
-                        break
-                    else:
-                        print("You step away from the window")
-                        mixer.music.stop()
+                    self.response += "Try to escape by climbing out the window? y/n"
+
+                    contemplating = True
+
+                    while contemplating:
+                        for event in pygame.event.get():
+
+                            if event == pygame.KEYDOWN:
+
+                                if event.key == K_y:
+                                    self.death()
+                                    contemplating = False
+                                    RUNNING = False
+                                    self.response = "..."
+                                    break
+
+                                if event.key == K_n:
+                                    self.response = ("You step away from the window")
+                                    contemplating = False
+                                    self.update_graphics("")
+                                    mixer.music.stop()
+                                    self.restart_bg_music()
 
                 #let player search for bonus record in fireplace once greenhouse has been unlocked
                 if temp.name == "fireplace" and self.greenhouse.locked == False:
@@ -292,8 +307,8 @@ class Game(pygame.Surface):
                     for i in range(len(self.inventory)):
                         temp = self.inventory[i]
                         if temp.name == "letter":
-                            self.response = "You light a match under the letter and a hidden message takes shape. It says 'escape below. 49 07 13.'"
-                            temp.description += "\nThere's a message written between the lines in invisible ink that says 'escape below. 49 07 13.'"
+                            self.response = "You light a match under the letter and a hidden message\ntakes shape. It says 'escape below. 49 07 13.'"
+                            temp.description += "\nThere's a message written between the lines in\ninvisible ink that says 'escape below. 49 07 13.'"
                             temp.single_use = True
 
                     break
@@ -412,14 +427,14 @@ class Game(pygame.Surface):
                     for i in range(len(self.current_room.items)):
                         temp = self.current_room.items[i]
                         if temp.name == "music box":
-                            self.response = str(music_box)
+                            self.response = str(self.entry_hall.music_box)
                             self.response += "You put the key in the music box and wind it up."
 
-                            mixer.music.load(r"room_explorer_audio\flight_of_the_confused_pigeon.mp3")
+                            mixer.music.load(os.path.join("room_explorer_audio", "flight_of_the_confused_pigeon.mp3"))
                             mixer.music.play()
                             for i in range(10):
                                 pass
-                            restart_bg_music()
+                            self.restart_bg_music()
 
                             self.bonuses_found += 1
                     break
@@ -439,19 +454,20 @@ class Game(pygame.Surface):
                     #unlock cabinet and add music box to room
                     if item == "cabinet" and self.current_room.name == "entry hall":
 
-                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        attempt = self.input_code()
+
                         if attempt == search.correct_code:
-                            self.response = "The cabinet opens. Inside, you see a small music box with a keyhole in it."
-                            self.entry_hall.add_item("music box", "A small wooden music box with a keyhole. An engraving on the bottom says\n'Congratulations! You solved a set of extra-hard puzzles and found one of the bonuses!\nPlease enjoy this music as a reward.'")
+                            self.response = "The cabinet opens. Inside, you see a small music \nbox with a keyhole in it."
+                            self.entry_hall.add_sound_item("music box", "A small wooden music box with a keyhole. \nAn engraving on the bottom says\n'Congratulations! You solved a set of extra-hard \npuzzles and found one of the bonuses!\nPlease enjoy this music as a reward.'", "flight_of_the_confused_pigeon.mp3")
 
                         break
 
 
                     #unlock box and add basement key to the player's inventory
                     if item == "box":
-                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        attempt = self.input_code()
                         if attempt == search.correct_code:
-                            self.response = "The box pops open. Inside, you find a large, rusted key. You put the key in your pocket."
+                            self.response = "The box pops open. Inside, you find a large, \nrusted key. You put the key in your pocket."
                             rusty_key = Grabbable("rusty_key", "A large, plain, rust-covered key.")
                             self.inventory.append(rusty_key)
 
@@ -461,9 +477,9 @@ class Game(pygame.Surface):
 
                     #unlock secret compartment and add greenhouse key to the player's inventory
                     if item == "wardrobe":
-                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        attempt = self.input_code()
                         if attempt == search.correct_code:
-                            self.response = "A secret compartment slides open! In it, you find a pretty silver key with a flower engraved on the end. You put the key in your pocket."
+                            self.response = "A secret compartment slides open! In it, you find a pretty \nsilver key with a flower engraved on the end. You put the \nkey in your pocket."
                             flower_key = Grabbable("flower_key", "A small silver key with a flower-shaped handle.")
                             self.inventory.append(flower_key)
 
@@ -473,7 +489,7 @@ class Game(pygame.Surface):
 
                     #unlock library door
                     if item == "door" and self.current_room.name == "living room":
-                        attempt = input("Type your guess for the code here:").replace(" ", "")
+                        attempt = self.input_code()
                         if attempt == search.correct_code:
                             self.response = "You hear a click and the door unlocks."
                             self.library.locked = False
@@ -501,10 +517,6 @@ class Game(pygame.Surface):
         self.response = controls.read()
         controls.close()
 
-
-    def handle_inventory(self):
-        """print player's inventory"""
-
     
     def handle_map(self):
         """display a map of the building"""
@@ -531,7 +543,7 @@ class Game(pygame.Surface):
             mixer.music.set_volume(0.7)
             mixer.music.play()
             sleep(3)
-            restart_bg_music()
+            self.restart_bg_music()
         
         if action == "escape":
             self.response = "Wow, that's a great idea. I wish I had thought of that earlier."
@@ -624,6 +636,7 @@ class Game(pygame.Surface):
         print(intro)
         mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
+        mixer.music.play()
 
 
         paused = True
@@ -652,7 +665,7 @@ class Game(pygame.Surface):
 
 
         #set up background music
-        restart_bg_music()
+        self.restart_bg_music()
 
 
         RUNNING = True
@@ -731,28 +744,53 @@ class Game(pygame.Surface):
 
 
     def credits(self):
-        self.response = ("\t\tRoom Explorer")
-        self.response += ("\nCode: Rachel Dahl")
-        self.response += ("\nMusic:\n'Variations on Scarborough Fair' written by Calvin Custer and performed by Cas Curry\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n'Inverse' by Rachel Dahl\nAll other music and sound effects from Pixabay")
-        self.response += ("\nVoice Acting:\nNumbers station - Rachel Dahl\nDesperate recording - Brandon Jones\nBonus Record - Lexi Dahl")
-        self.response += ("\nGraphics:\nWallpapers/Background Images - Rawpixel, Deviant Art, Freepik, Depositphotos, Flickr, PickPik, Stockvault, Wikimedia Commons, Creazilla\n3D Models - Rachel Dahl\nFont - Traveling Typewriter by Carl Krull")
-        self.response += ("\nPuzzle Ideas Assistance:\nBrandon Jones\nCaleb Davis\nAbby Mikulski\nChuck Pealer\nElia Browning")
-        self.response += ("\nTypewriter message:\nWinnifred (my cat)")
-        self.response += ("\nBeta Testing:\nLexi Dahl\nCaleb Davis\n")
-
-        self.update_graphics()
-
+        
         mixer.init()
         mixer.music.load(CREDITS)
         mixer.music.set_volume(0.7)
         mixer.music.play()
 
-        for i in range(3):
-            pass
+        self.response = ("\t\tRoom Explorer")
+        self.update_graphics("")
+        sleep(3)
 
-        sleep(75)
+        self.response = ("\nCode:\n\nRachel Dahl")
+        self.response += ("\n\nSpecial thanks to Brandon Jones for helping me debug")
+        self.update_graphics("")
+        sleep(5)
+
+        self.response = ("\nMusic:\n\n'Variations on Scarborough Fair'\nwritten by Calvin Custer and performed by Cas Curry\n\n'Flight of the Confused Pigeon' by Rachel and Lexi Dahl\n\n'Inverse' by Rachel Dahl\n\nAll other music and sound effects from Pixabay")
+        self.update_graphics("")
+        sleep(6)
+
+        self.response = ("\nVoice Acting:\n\nNumbers station - Rachel Dahl\n\nDesperate recording - Brandon Jones\n\nBonus Record - Lexi Dahl")
+        self.update_graphics("")
+        sleep(5)
+
+        self.response = ("\nGraphics:\n\nWallpapers/Background Images - \nRawpixel, Deviant Art, Freepik, Depositphotos, \nFlickr, PickPik, Stockvault, Wikimedia Commons, Creazilla\n\n3D Models - Rachel Dahl\n\nFont - Traveling Typewriter by Carl Krull")
+        self.update_graphics("")
+        sleep(6)
+
+        self.response = ("\nPuzzle Ideas Assistance:\n\nBrandon Jones\n\nCaleb Davis\n\nAbby Mikulski\n\nChuck Pealer\n\nElia Browning")
+        self.update_graphics("")
+        sleep(5)
+        
+        self.response = ("\nTypewriter message:\n\nWinnifred (my cat)")
+        self.update_graphics("")
+        sleep(5)
+
+        self.response = ("\nBeta Testing:\n\nLexi Dahl\n\nCaleb Davis\n")
+        self.update_graphics("")
+        sleep(5)
+
+        self.response = ""
+        self.update_graphics("")
+        sleep(25)
+
+
         self.response = ("\nYou're still here? The game's over. Go home.")
-        self.update_graphics()
+        self.update_graphics("")
+        sleep(7)
 
     
     def update_graphics(self, action):
@@ -858,4 +896,41 @@ class Game(pygame.Surface):
                 self.handle_drop(noun)
             elif verb in ["u", "use"]:
                 self.handle_use(noun)
+
+
+    def input_code(self)->str:
+        self.response = "Type your guess for the code below:"
+        self.update_graphics("")
+                    
+        typing = True
+        attempt = ""
+
+        while typing:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN: 
+            
+                    # Check for backspace 
+                    if event.key == K_BACKSPACE:  
+                        attempt = attempt[:-1]
+
+                    elif event.key == K_RETURN: #finalize input and send that string to the next part of the code
+                        typing = False
+
+                    # add to string
+                    else: 
+                        attempt += event.unicode
+                        attempt = attempt.lower().replace(" ", "")
+
+                    self.update_graphics(attempt)
+
+        return attempt
+
+
+
+    def restart_bg_music(self):
+        """adjusts volume and restarts normal background 
+        music after another sound is played"""
+        mixer.music.set_volume(0.4)
+        mixer.music.load(BG_MUSIC)
+        mixer.music.play()
 

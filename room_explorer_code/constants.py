@@ -53,3 +53,6 @@ DEATH_SCREEN = pygame.image.load(DEATH_SCREEN)
 #constants for text
 FONT_SIZE = 20
 LINE_SPACING = 0
+
+#list of symbols code is randomly generated from
+OVEN_SYMBOLS = ["}", "#", "^", "&", "*", "|", ":", ".", "/", "?", "~", "`", ">", "=", "+", "-", "["]

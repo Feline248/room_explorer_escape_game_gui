@@ -5,6 +5,7 @@ from room import Room
 from items import Item, Grabbable, SoundItem, CodeItem
 import hints
 from pygame import mixer
+from random import choice
 from time import sleep
 from constants import *
 from miscellaneous_functions import *
@@ -191,6 +192,13 @@ class Game(pygame.Surface):
         library.add_code_item("box", "There is an ornately carved wooden box with 8 dials \non it.", "11214145")                              #library
 
         attic.add_code_item("wardrobe", "There's a large wooden wardrobe near the door.\nInside, it's empty except for a coat and a few spare \npillowcases. There's a carving on the inside wall of 4\nconcentric circles with letters on them. They look like\nthey might be some kind of dials?", "rose")                              #attic
+
+        #randomly generate code
+        oven_code = ""
+        for i in range(4):
+            oven_code += choice(OVEN_SYMBOLS)
+
+        kitchen.add_code_item("oven", "An oven/stove combo the same bright yellow as the rest\nof the kitchen. At first glance it seems pretty \nnormal, but the dials have strange symbols on them\ninstead of numbers or normal oven settings.", oven_code)
 
         #set current room
         self.current_room = entry_hall

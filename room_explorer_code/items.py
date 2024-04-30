@@ -62,11 +62,8 @@ class SoundItem(Item): #items that play sounds when looked at
         self.sound_path = os.path.join("room_explorer_audio", self.sound_file)
 
     def play_sound(self): #prints the item's description and plays its associated sound
-        mixer.music.load(self.sound_path)
         mixer.music.set_volume(0.7)
-        mixer.music.play()
-        for i in range(10):
-            pass
+        mixer.Channel(1).play(mixer.Sound(self.sound_path))
         
         
 

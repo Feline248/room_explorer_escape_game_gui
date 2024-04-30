@@ -231,14 +231,12 @@ class Game(pygame.Surface):
                 
                 #play sound when player looks at a sound item
                 if type(temp) == SoundItem:
-                    mixer.music.stop()
                     temp.play_sound()
-                    self.restart_bg_music()
-
 
                 #kill player if they climb out the window
                 if temp.name == "window":
-                    self.response += "Try to escape by climbing out the window? y/n"
+                    self.response += "\nTry to escape by climbing out the window? y/n"
+                    self.update_graphics("")
 
                     contemplating = True
 
@@ -263,12 +261,34 @@ class Game(pygame.Surface):
 
                 #let player search for bonus record in fireplace once greenhouse has been unlocked
                 if temp.name == "fireplace" and self.greenhouse.locked == False:
-                    print(self.response)
-                    answer = input("Reach into the chimney to look for hidden items? y/n")
+                    self.response += ("\nReach into the chimney to look for hidden items? y/n")
+                    self.update_graphics("")
+
+                    contemplating = True
+
+                    while contemplating:
+                        for event in pygame.event.get():
+
+                            if event == pygame.KEYDOWN:
+
+                                if event.key == K_y:
+                                    self.response = "Your hand brushes against something. You pull out \na record with a faded blue label on it."
+                                    blue_record = Grabbable("blue_record", "A scratched, soot smeared record you found \nin the fireplace.")
+                                    self.inventory.append(blue_record)
+                                    self.update_graphics("y")
+                                    contemplating = False
+                                    break
+
+                                if event.key == K_n:
+                                    self.response = ("You step away from the window")
+                                    contemplating = False
+                                    self.update_graphics("")
+                                    mixer.music.stop()
+                                    self.restart_bg_music()
+                    
                     if answer in ["y", "yes", "sure", "absolutely"]:
-                        print("Your hand brushes against something. You pull out a record with a faded blue label on it.")
-                        blue_record = Grabbable("blue_record", "A scratched, soot smeared record you found in the fireplace.")
-                        self.inventory.append(blue_record)
+                        print()
+                        
 
                 break
 
@@ -504,6 +524,11 @@ class Game(pygame.Surface):
 
                         break
 
+                    if item == "oven" and self.current_room.name == "kitchen":
+                        self.response = "I'm not sure this can help me..."
+                        self.update_graphics(search.correct_code)
+                        break
+
 
                 
     def handle_inventory(self):
@@ -554,7 +579,7 @@ class Game(pygame.Surface):
             self.restart_bg_music()
         
         if action == "escape":
-            self.response = "Wow, that's a great idea. I wish I had thought of that earlier."
+            self.response = "Wow, that's a great idea. I wish I had thought \nof that earlier."
 
         if action in ["magic", "teleport", "time travel"]:
             self.response = "I mean I guess I could, but that feels like cheating"
@@ -567,8 +592,9 @@ class Game(pygame.Surface):
             for i in range(len(self.inventory)):
                 temp = self.inventory[i]
                 if temp.name == "matches":
-                    self.response = "You set fire to the room. If you can't get out, you'll take the whole house with you."
+                    self.response = "You set fire to the room. If you can't\n get out, you'll take the whole house with you."
                     RUNNING = False
+                    break
 
         if action in ["celebrate", "woop woop", "cheer"]:
             self.response = "Yay! I accomplished something!"
@@ -630,11 +656,11 @@ class Game(pygame.Surface):
     def play(self):
 
         #intro cutscene
-        intro = "Due to your incredible planning skills, the 'fun hike' you had\nplanned turned out to be pretty"
+        intro = "Due to your incredible planning skills, the 'fun hike' you had\nplanned turned out to be pretty "
         intro += "unpleasant. Not only are you completely\nlost, you also forgot to check the weather, and it started\n"
-        intro += "pouring rain. Luckily, you found an old house to take shelter\nin. It looks like it's been abandoned"
+        intro += "pouring rain. Luckily, you found an old house to take shelter\nin. It looks like it's been abandoned "
         intro += "for decades, but at least it's dry.\nAs you close the door behind you, you hear a loud crack.\n"
-        intro += "You try to open the door to see what it was, and realize too late\nthat the sound didn't come from"
+        intro += "You try to open the door to see what it was, and realize too late\nthat the sound didn't come from "
         intro += "outside. It was the door itself.\nIt's firmly stuck, and now you'll need to find another way out."
         intro += "\n\n\t\t\t\t\t\tPress enter to begin."
 
@@ -673,7 +699,8 @@ class Game(pygame.Surface):
 
 
         #set up background music
-        self.restart_bg_music()
+        mixer.music.set_volume(0.4)
+        mixer.Channel(0).play(mixer.Sound(BG_MUSIC))
 
 
         RUNNING = True
@@ -935,10 +962,5 @@ class Game(pygame.Surface):
 
 
 
-    def restart_bg_music(self):
-        """adjusts volume and restarts normal background 
-        music after another sound is played"""
-        mixer.music.set_volume(0.4)
-        mixer.music.load(BG_MUSIC)
-        mixer.music.play()
+
 

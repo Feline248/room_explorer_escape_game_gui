@@ -56,3 +56,4 @@ LINE_SPACING = 0
 
 #list of symbols code is randomly generated from
 OVEN_SYMBOLS = ["}", "#", "^", "&", "*", "|", ":", ".", "/", "?", "~", "`", ">", "=", "+", "-", "["]
+

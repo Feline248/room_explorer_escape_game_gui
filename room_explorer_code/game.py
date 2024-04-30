@@ -233,62 +233,57 @@ class Game(pygame.Surface):
                 if type(temp) == SoundItem:
                     temp.play_sound()
 
-                #kill player if they climb out the window
-                if temp.name == "window":
-                    self.response += "\nTry to escape by climbing out the window? y/n"
-                    self.update_graphics("")
+                # #kill player if they climb out the window
+                # if temp.name == "window":
+                #     self.response += "\nTry to escape by climbing out the window? y/n"
+                #     self.update_graphics("")
 
-                    contemplating = True
+                #     contemplating = True
 
-                    while contemplating:
-                        for event in pygame.event.get():
+                #     while contemplating:
+                #         for event in pygame.event.get():
 
-                            if event == pygame.KEYDOWN:
+                #             if event == pygame.KEYDOWN:
 
-                                if event.key == K_y:
-                                    self.death()
-                                    contemplating = False
-                                    RUNNING = False
-                                    self.response = "..."
-                                    break
+                #                 if event.key == K_y:
+                #                     self.death()
+                #                     contemplating = False
+                #                     RUNNING = False
+                #                     self.response = "..."
+                #                     break
 
-                                if event.key == K_n:
-                                    self.response = ("You step away from the window")
-                                    contemplating = False
-                                    self.update_graphics("")
-                                    mixer.music.stop()
-                                    self.restart_bg_music()
+                #                 if event.key == K_n:
+                #                     self.response = ("You step away from the window")
+                #                     contemplating = False
+                #                     self.update_graphics("")
+                #                     mixer.music.stop()
+                #                     self.restart_bg_music()
 
-                #let player search for bonus record in fireplace once greenhouse has been unlocked
-                if temp.name == "fireplace" and self.greenhouse.locked == False:
-                    self.response += ("\nReach into the chimney to look for hidden items? y/n")
-                    self.update_graphics("")
+                # #let player search for bonus record in fireplace once greenhouse has been unlocked
+                # if temp.name == "fireplace" and self.greenhouse.locked == False:
+                #     self.response += ("\nReach into the chimney to look for hidden items? y/n")
+                #     self.update_graphics("")
 
-                    contemplating = True
+                #     contemplating = True
 
-                    while contemplating:
-                        for event in pygame.event.get():
+                #     while contemplating:
+                #         for event in pygame.event.get():
 
-                            if event == pygame.KEYDOWN:
+                #             if event == pygame.KEYDOWN:
 
-                                if event.key == K_y:
-                                    self.response = "Your hand brushes against something. You pull out \na record with a faded blue label on it."
-                                    blue_record = Grabbable("blue_record", "A scratched, soot smeared record you found \nin the fireplace.")
-                                    self.inventory.append(blue_record)
-                                    self.update_graphics("y")
-                                    contemplating = False
-                                    break
+                #                 if event.key == K_y:
+                #                     self.response = "Your hand brushes against something. You pull out \na record with a faded blue label on it."
+                #                     blue_record = Grabbable("blue_record", "A scratched, soot smeared record you found \nin the fireplace.")
+                #                     self.inventory.append(blue_record)
+                #                     self.update_graphics("y")
+                #                     contemplating = False
+                #                     break
 
-                                if event.key == K_n:
-                                    self.response = ("You step away from the window")
-                                    contemplating = False
-                                    self.update_graphics("")
-                                    mixer.music.stop()
-                                    self.restart_bg_music()
-                    
-                    if answer in ["y", "yes", "sure", "absolutely"]:
-                        print()
-                        
+                #                 if event.key == K_n:
+                #                     self.response = ("It's probably not worth it")
+                #                     contemplating = False
+                #                     self.update_graphics("")
+                #                     break
 
                 break
 
@@ -666,8 +661,8 @@ class Game(pygame.Surface):
 
         self.draw_text(intro, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
         pygame.display.update()
-        
-        print(intro)
+
+
         mixer.music.load(STORM)
         mixer.music.set_volume(0.7)
         mixer.music.play()
@@ -692,7 +687,6 @@ class Game(pygame.Surface):
 
         mixer.music.stop()
 
-        print(self.current_room)
         self.response = str(self.current_room)
         pygame.draw.rect(self.window, PAPER, pygame.Rect(Game.WIDTH / 4, Game.HEIGHT / 4, Game.WIDTH / 2, Game.HEIGHT / 2))
         self.update_graphics(" ")
@@ -736,7 +730,6 @@ class Game(pygame.Surface):
                     elif event.key == K_RETURN: #finalize input and send that string to the next part of the code
                         self.evaluate_input(action)
                         self.response += "\nWhat would you like to do?"
-                        print(self.response)
                         action = ""
 
                     # add to string
@@ -765,8 +758,11 @@ class Game(pygame.Surface):
 
 
     def death(self):
-        print("As you climb out of the window, you realize suddenly that there is nothing underneath you.\nThe house was on the edge of a cliff! It quickly disappears into the mist as you fall to your death.\n")
+        self.response = ("As you climb out of the window, you realize suddenly that there is nothing underneath you.\nThe house was on the edge of a cliff! It quickly disappears into the mist as you fall to your death.\n")
         self.window.blit(DEATH_SCREEN, (0, 0))
+        pygame.draw.rect(self.window, PAPER, self.message_box)
+        self.draw_text(self.response, self.message_box)
+        pygame.display.update()
         RUNNING = False
 
 

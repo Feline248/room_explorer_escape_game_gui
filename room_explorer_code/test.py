@@ -10,7 +10,7 @@ from items import Item, Grabbable
 
 
 g = Game()
-g.current_room = g.escape
+g.current_room = g.living_room
 
 # room1 = Room("kitchen")
 
@@ -22,7 +22,7 @@ g.current_room = g.escape
 # g.kitchen.add_item(item1)
 
 
-g.credits()
+g.death()
 # skeleton_key = Item("flower_key", "...")
 # g.inventory.append(skeleton_key)
 # unlabeled_record = Grabbable("unlabeled_record", "add description here")
